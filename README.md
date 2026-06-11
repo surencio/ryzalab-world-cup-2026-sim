@@ -4,6 +4,24 @@ A statistical forecasting engine and Monte Carlo simulator for the 48-team **202
 
 ---
 
+## TL;DR
+
+*   **Unbiased Simulation:** Runs a 10,000-run Monte Carlo simulation of all 12 groups, resolving standing ties using actual goal counts and randomized tie-breakers.
+*   **Stochastic Recovery:** Simulates player recovery curves (e.g., Neymar, Kudus, Davies) round-by-round, meaning teams gain or lose strength as players return to fitness.
+*   **Headline Standings:** Brazil is highly vulnerable in Group C (51% group-win chance vs Morocco's 44%) due to injuries, while the USMNT dominates Group D (73% group-win chance) on home soil. A depleted Netherlands team faces a tight three-way race with Sweden and Japan in Group F.
+
+---
+
+## Non-Technical Overview
+
+Most World Cup forecasting engines rely on static metrics (like historical FIFA rankings) and simulate matches like a coin flip (win, draw, or loss). This project models the tournament with two key real-world improvements:
+
+1.  **Lineups Are Not Static:** If a key player like Neymar is recovering from a calf injury, they might miss the first match but play the third. Rather than assuming they are permanently out (which underrates the team) or permanently fit (which overrates them), the simulator rolls a virtual die for each match to determine if they play. The team’s strength dynamically updates for each game.
+2.  **Scorelines Matter:** In the new 48-team World Cup format, the top two teams in each group advance, along with the *eight best third-placed teams*. To determine the best third-placed teams, FIFA looks at **Goal Difference** and **Goals Scored**. Because of this, we simulate the exact goals scored per game (e.g., 2-1 or 1-1) rather than just who wins. This lets us calculate the true standings and tie-breakers.
+
+---
+
+
 ## Features
 
 1.  **Dixon-Coles Bivariate Poisson Goal Model:** 
