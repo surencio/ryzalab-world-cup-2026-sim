@@ -28,17 +28,23 @@ In football tournaments, simulating actual scorelines is critical to model Goal 
 $$P(X=x, Y=y) = \tau(x, y, \lambda, \mu) \frac{\lambda^x e^{-\lambda}}{x!} \frac{\mu^y e^{-\mu}}{y!}$$
 Where:
 *   $\lambda, \mu$ are the expected goals (xG) for Team A and Team B, derived from adjusted Elo ratings $R_A, R_B$:
-    - $\lambda + \mu = G_{\text{avg}} \approx 2.5$ (average tournament goals per game)
-    - $\lambda / \mu = 10^{(R_A - R_B)/400}$
-*   $\tau(x, y, \lambda, \mu)$ is the Dixon-Coles correlation factor adjusting for low-scoring dependence (using a baseline parameter $\rho \approx -0.04$ to correct draw inflation):
+    - **Calibrated Damping Factor ($s=0.58$)**: Compress rating differences to avoid overconfidence: $\lambda / \mu = 10^{(s \cdot (R_A - R_B))/400}$
+    - **Variable Expected Goals Model ($G(d)$)**: Replace constant 2.5 average goals with a linear rating-difference model: $G(d) = \lambda + \mu = 2.37943 + 0.001373 \cdot |R_A - R_B|$, where $d = R_A - R_B$.
+*   $\tau(x, y, \lambda, \mu)$ is the Dixon-Coles correlation factor adjusting for low-scoring dependence (using a baseline parameter $\rho = -0.04$ to correct draw inflation):
     - $\tau(0,0) = 1 - \lambda \mu \rho$
     - $\tau(1,0) = 1 + \mu \rho$
     - $\tau(0,1) = 1 + \lambda \rho$
     - $\tau(1,1) = 1 - \rho$
     - $\tau(x,y) = 1$ otherwise.
 
+### 3. Round of 32 Joint Tournament Simulation (48-Team Format)
+For the 48-team World Cup format, groups cannot be simulated in isolation because wild-card advancement depends on ranking third-place teams across all 12 groups:
+*   **Joint Iteration**: In each simulation run, simulate all 12 groups jointly under the same player availability conditions.
+*   **Standings Resolution**: Resolve group rankings using points $\rightarrow$ GD $\rightarrow$ GS $\rightarrow$ base Elo (with randomized tie-breaking for unresolved ties).
+*   **Wild-Card Ranking**: Pool the 12 third-placed teams and sort them using points $\rightarrow$ GD $\rightarrow$ GS $\rightarrow$ random tie-breaker.
+*   **Advancement**: The top 8 teams from the wild-card pool advance to the Round of 32. Direct qualifiers (1st and 2nd) and advancing thirds are recorded.
 
-### 3. Tournament Adjustments (Host & Environment)
+### 4. Tournament Adjustments (Host & Environment)
 *   **Host Advantage (HFA)**: Add $+100$ Elo points for hosts (USA, Mexico, Canada).
 *   **Altitude Penalty**: Apply a rating deduction for non-altitude acclimated teams playing in Mexico City (Estadio Azteca, 2,240m altitude). Deduct $1.5$ Elo points for every 100m of altitude difference above 1000m.
 *   **Surface Modifier**: Apply a $-30$ Elo penalty to grass-native teams playing on artificial turf (e.g., BC Place in Vancouver).

@@ -102,9 +102,6 @@ def get_group_pairings(group_name, teams):
     
     if group_name == "Group B":
         # Switzerland (0), Canada (1), Bosnia (2), Qatar (3)
-        # R1: Canada vs Bosnia, Switzerland vs Qatar
-        # R2: Canada vs Qatar, Switzerland vs Bosnia
-        # R3: Canada vs Switzerland, Bosnia vs Qatar
         return [
             (teams[1], teams[2], 0),
             (teams[0], teams[3], 0),
@@ -115,9 +112,6 @@ def get_group_pairings(group_name, teams):
         ]
     elif group_name == "Group C":
         # Morocco (0), Brazil (1), Scotland (2), Haiti (3)
-        # R1: Brazil vs Morocco, Scotland vs Haiti
-        # R2: Brazil vs Haiti, Morocco vs Scotland
-        # R3: Brazil vs Scotland, Morocco vs Haiti
         return [
             (teams[1], teams[0], 0),
             (teams[2], teams[3], 0),
@@ -128,9 +122,6 @@ def get_group_pairings(group_name, teams):
         ]
     elif group_name == "Group L":
         # England (0), Croatia (1), Panama (2), Ghana (3)
-        # R1: England vs Croatia, Panama vs Ghana
-        # R2: England vs Ghana, Croatia vs Panama
-        # R3: England vs Panama, Croatia vs Ghana
         return [
             (teams[0], teams[1], 0),
             (teams[2], teams[3], 0),
@@ -174,7 +165,6 @@ def sample_dixon_coles(lambda_a, lambda_b, rho=-0.04):
         for x in range(10):
             for y in range(10):
                 p = poisson_pmf(x, lambda_a) * poisson_pmf(y, lambda_b)
-                # Dixon-Coles adjustment
                 if x == 0 and y == 0:
                     p *= (1 - lambda_a * lambda_b * rho)
                 elif x == 1 and y == 0:
@@ -213,8 +203,18 @@ def get_match_ratings(team_a, team_b, round_idx, group_teams, team_u=None):
 
     return get_team_elo(team_a, round_idx), get_team_elo(team_b, round_idx)
 
-def simulate_group(group_name, group_teams, n_sims=100000):
-    teams = list(group_teams.keys())
+def simulate_group(group_name_or_teams, group_teams=None, n_sims=100000):
+    """
+    Simulates a group independently. Kept for backward compatibility with audit scripts.
+    """
+    if isinstance(group_name_or_teams, dict):
+        group_teams_dict = group_name_or_teams
+        group_name = "Group X"
+    else:
+        group_name = group_name_or_teams
+        group_teams_dict = group_teams
+        
+    teams = list(group_teams_dict.keys())
     standings_freq = {team: [0, 0, 0, 0] for team in teams}
     total_points = {team: 0 for team in teams}
     pairings = get_group_pairings(group_name, teams)
@@ -226,10 +226,16 @@ def simulate_group(group_name, group_teams, n_sims=100000):
         team_u = {team: random.random() for team in teams}
         
         for team_a, team_b, rd in pairings:
-            elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams, team_u)
-            r = 10**((elo_a - elo_b) / 400.0)
-            lambda_b = 2.5 / (1.0 + r)
-            lambda_a = 2.5 - lambda_b
+            elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams_dict, team_u)
+            # Damping s=0.58
+            r = 10**((0.58 * (elo_a - elo_b)) / 400.0)
+            
+            # Variable goals G(d)
+            diff = abs(elo_a - elo_b)
+            g_d = 2.37943 + 0.001373 * diff
+            
+            lambda_b = g_d / (1.0 + r)
+            lambda_a = g_d - lambda_b
             
             goals_a, goals_b = sample_dixon_coles(lambda_a, lambda_b)
             
@@ -251,7 +257,7 @@ def simulate_group(group_name, group_teams, n_sims=100000):
         
         sorted_teams = sorted(
             shuffled_teams, 
-            key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams)), 
+            key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams_dict)), 
             reverse=True
         )
         for rank, team in enumerate(sorted_teams):
@@ -269,9 +275,124 @@ def simulate_group(group_name, group_teams, n_sims=100000):
         }
     return results
 
-if __name__ == "__main__":
-    all_results = {}
-    for group_name, group_teams in groups.items():
-        all_results[group_name] = simulate_group(group_name, group_teams)
+def simulate_tournament(n_sims=100000):
+    """
+    Simulates all 12 groups jointly to correctly evaluate best-third-place advancement.
+    """
+    all_teams = []
+    team_to_group = {}
+    for g_name, g_teams in groups.items():
+        for t in g_teams:
+            all_teams.append(t)
+            team_to_group[t] = g_name
+
+    standings_freq = {team: [0, 0, 0, 0] for team in all_teams}
+    total_points = {team: 0 for team in all_teams}
+    r32_adv_count = {team: 0 for team in all_teams}
+
+    for _ in range(n_sims):
+        third_place_teams = []
+        direct_qualifiers = set()
         
+        # Simulate each of the 12 groups
+        for group_name, group_teams in groups.items():
+            teams = list(group_teams.keys())
+            pairings = get_group_pairings(group_name, teams)
+            
+            points = {team: 0 for team in teams}
+            gd = {team: 0 for team in teams}
+            gs = {team: 0 for team in teams}
+            
+            # Single uniform random variable per team per run for monotone coupling
+            team_u = {team: random.random() for team in teams}
+            
+            for team_a, team_b, rd in pairings:
+                elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams, team_u)
+                r = 10**((0.58 * (elo_a - elo_b)) / 400.0)
+                
+                # Variable goals G(d)
+                diff = abs(elo_a - elo_b)
+                g_d = 2.37943 + 0.001373 * diff
+                
+                lambda_b = g_d / (1.0 + r)
+                lambda_a = g_d - lambda_b
+                
+                goals_a, goals_b = sample_dixon_coles(lambda_a, lambda_b)
+                
+                gs[team_a] += goals_a
+                gs[team_b] += goals_b
+                gd[team_a] += goals_a - goals_b
+                gd[team_b] += goals_b - goals_a
+                
+                if goals_a > goals_b:
+                    points[team_a] += 3
+                elif goals_a < goals_b:
+                    points[team_b] += 3
+                else:
+                    points[team_a] += 1
+                    points[team_b] += 1
+                    
+            shuffled_teams = list(teams)
+            random.shuffle(shuffled_teams)
+            
+            sorted_teams = sorted(
+                shuffled_teams,
+                key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams)),
+                reverse=True
+            )
+            
+            # Group standing frequencies
+            for rank, team in enumerate(sorted_teams):
+                standings_freq[team][rank] += 1
+                total_points[team] += points[team]
+                
+            # 1st & 2nd place qualify directly
+            direct_qualifiers.add(sorted_teams[0])
+            direct_qualifiers.add(sorted_teams[1])
+            
+            # 3rd place team goes to wild-card pool
+            t3 = sorted_teams[2]
+            third_place_teams.append({
+                "team": t3,
+                "points": points[t3],
+                "gd": gd[t3],
+                "gs": gs[t3]
+            })
+
+        # Rank the 12 third-place teams: points -> GD -> GS -> random tie-breaker.
+        ranked_thirds = sorted(
+            third_place_teams,
+            key=lambda x: (x["points"], x["gd"], x["gs"], random.random()),
+            reverse=True
+        )
+        
+        # Top 8 advance
+        advancing_thirds = set(item["team"] for item in ranked_thirds[:8])
+        
+        # Accumulate advancement
+        for team in direct_qualifiers:
+            r32_adv_count[team] += 1
+        for team in advancing_thirds:
+            r32_adv_count[team] += 1
+
+    results = {}
+    for group_name, group_teams in groups.items():
+        results[group_name] = {}
+        for team in group_teams.keys():
+            results[group_name][team] = {
+                "avg_points": total_points[team] / n_sims,
+                "1st": standings_freq[team][0] / n_sims,
+                "2nd": standings_freq[team][1] / n_sims,
+                "3rd": standings_freq[team][2] / n_sims,
+                "4th": standings_freq[team][3] / n_sims,
+                "r32_adv": r32_adv_count[team] / n_sims
+            }
+    return results
+
+if __name__ == "__main__":
+    # Fix seed for run reproducibility
+    random.seed(42)
+    
+    # Run 100,000 simulations
+    all_results = simulate_tournament(n_sims=100000)
     print(json.dumps(all_results, indent=2))

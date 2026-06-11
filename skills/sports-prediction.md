@@ -46,6 +46,12 @@ In tournament group stages, motivation is dynamic:
 *   **Already Qualified (1st place locked)**: Deduct $60$ Elo points from the qualified team's rating in Game 3 due to expected squad rotation.
 *   **Must Win vs. Eliminated**: If Team A must win to advance and Team B is already mathematically eliminated, add $+45$ Elo points of motivation to Team A.
 
+### 5. Interfacing with Calibration Parameters
+When applying qualitative Elo adjustments, they must pass through the calibrated forecasting parameters:
+*   **Elo Damping ($s=0.58$)**: Note that any qualitative adjustment applied to the base rating is compressed by the $s=0.58$ damping factor when calculating match expectations. For example, a $-60$ Elo penalty for Neymar's injury behaves as an effective $-34.8$ Elo difference penalty.
+*   **Variable Goals ($G(d)$)**: Rating adjustments alter the rating difference $d$, which dynamically increases the expected total goals $G(d) = 2.37943 + 0.001373 \cdot |d|$.
+*   **R32 Advancement**: When evaluating the final impacts of group stage adjustments (e.g. qualified rotation penalties), simulate the entire 12-group tournament jointly to correctly evaluate how these adjustments affect wild-card advancement for 3rd-place teams.
+
 ---
 
 ## Anti-Patterns to Avoid

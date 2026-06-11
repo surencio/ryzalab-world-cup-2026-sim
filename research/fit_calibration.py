@@ -1,27 +1,15 @@
-"""
-Historical World Cup Group Stage Validation.
-Calibrated Dixon-Coles Goal Model with s=0.58 Elo Damping and Variable Total Goals.
-
-Source Snapshots from eloratings.net archives:
-- 2014 World Cup: June 11, 2014 snapshot (https://www.eloratings.net/2014_World_Cup.tsv)
-- 2018 World Cup: June 13, 2018 snapshot (https://www.eloratings.net/2018_World_Cup.tsv)
-- 2022 World Cup: November 19, 2022 snapshot (https://www.eloratings.net/2022_World_Cup.tsv)
-Note: Host teams receive a +100 Home Field Advantage (HFA) adjustment.
-"""
-
 import math
 import random
 import json
 import time
 
-# Set seed for reproducibility
-random.seed(42)
+# Host HFA adjustment
+HFA = 100
 
-# Start-of-tournament Elo ratings from eloratings.net archives
-# Calculated as End Rating - Change from the respective tournament TSVs.
-elo_ratings = {
+# Ratings Set A: Clean Start-of-Tournament Elos from TSVs
+elos_clean = {
     2014: {
-        "Brazil": 2138 + 100,  # Host HFA
+        "Brazil": 2138 + HFA,
         "Croatia": 1818,
         "Mexico": 1814,
         "Cameroon": 1606,
@@ -55,7 +43,7 @@ elo_ratings = {
         "South Korea": 1667
     },
     2018: {
-        "Russia": 1677 + 100,  # Host HFA
+        "Russia": 1677 + HFA,
         "Saudi Arabia": 1588,
         "Egypt": 1639,
         "Uruguay": 1893,
@@ -89,7 +77,7 @@ elo_ratings = {
         "Japan": 1684
     },
     2022: {
-        "Qatar": 1680 + 100,  # Host HFA
+        "Qatar": 1680 + HFA,
         "Ecuador": 1832,
         "Senegal": 1684,
         "Netherlands": 2040,
@@ -122,6 +110,13 @@ elo_ratings = {
         "Uruguay": 1935,
         "South Korea": 1786
     }
+}
+
+# Ratings Set B: Auditor-Requested Spot-Check Elos (Brazil=2133, Spain=1997, Argentina=2144)
+elos_auditor = {
+    2014: elos_clean[2014],
+    2018: elos_clean[2018],
+    2022: {**elos_clean[2022], "Brazil": 2133, "Spain": 1997, "Argentina": 2144}
 }
 
 # Group structures for each World Cup
@@ -197,7 +192,6 @@ def poisson_pmf(k, mu):
         return 1.0 if k == 0 else 0.0
     return (mu**k * math.exp(-mu)) / math.factorial(k)
 
-# Memoization cache for Dixon-Coles grid and cumulative weights
 _dixon_coles_cache = {}
 
 def sample_dixon_coles(lambda_a, lambda_b, rho=-0.04):
@@ -218,18 +212,15 @@ def sample_dixon_coles(lambda_a, lambda_b, rho=-0.04):
                     p *= (1 + lambda_a * rho)
                 elif x == 1 and y == 1:
                     p *= (1 - rho)
-                
                 p = max(0.0, p)
                 grid[(x, y)] = p
                 total += p
-                
         options = list(grid.keys())
         cumulative_weights = []
         cumulative = 0.0
         for opt in options:
             cumulative += grid[opt] / total
             cumulative_weights.append(cumulative)
-            
         _dixon_coles_cache[key] = (options, cumulative_weights)
         
     r = random.random()
@@ -238,7 +229,7 @@ def sample_dixon_coles(lambda_a, lambda_b, rho=-0.04):
             return opt
     return options[-1]
 
-def simulate_group(group_teams, elos, n_sims=100000, s=0.58):
+def simulate_group(group_teams, elos, n_sims=50000, s=1.0, sigma=0.0):
     teams = list(group_teams)
     standings_freq = {team: [0, 0, 0, 0] for team in teams}
     total_points = {team: 0 for team in teams}
@@ -253,13 +244,19 @@ def simulate_group(group_teams, elos, n_sims=100000, s=0.58):
     ]
     
     for _ in range(n_sims):
-        points = {team: 0 for team in teams}
-        gd = {team: 0 for team in teams}
-        gs = {team: 0 for team in teams}
+        # Draw rating noise once per team per run
+        run_elos = {}
+        for team in teams:
+            noise = random.normalvariate(0, sigma) if sigma > 0 else 0.0
+            run_elos[team] = elos[team] + noise
+            
+        points = {team: 0 for team in run_elos}
+        gd = {team: 0 for team in run_elos}
+        gs = {team: 0 for team in run_elos}
         
         for team_a, team_b in pairings:
-            elo_a = elos[team_a]
-            elo_b = elos[team_b]
+            elo_a = run_elos[team_a]
+            elo_b = run_elos[team_b]
             # (a) Elo damping
             r = 10**((s * (elo_a - elo_b)) / 400.0)
             
@@ -288,10 +285,10 @@ def simulate_group(group_teams, elos, n_sims=100000, s=0.58):
         shuffled_teams = list(teams)
         random.shuffle(shuffled_teams)
         
-        # Tie-breaker key: Points -> GD -> GS -> Elo (resolves all ties)
+        # Tie-breaker logic (with randomization of unresolved ties)
         sorted_teams = sorted(
             shuffled_teams,
-            key=lambda t: (points[t], gd[t], gs[t], elos[t]),
+            key=lambda t: (points[t], gd[t], gs[t], run_elos[t]),
             reverse=True
         )
         
@@ -305,18 +302,9 @@ def simulate_group(group_teams, elos, n_sims=100000, s=0.58):
             "avg_points": total_points[team] / n_sims,
             "1st": standings_freq[team][0] / n_sims,
             "2nd": standings_freq[team][1] / n_sims,
-            "3rd": standings_freq[team][2] / n_sims,
-            "4th": standings_freq[team][3] / n_sims,
             "qualify": (standings_freq[team][0] + standings_freq[team][1]) / n_sims
         }
     return results
-
-def calculate_brier_score(predictions, actuals):
-    bs_sum = 0.0
-    for team, p in predictions.items():
-        y = actuals[team]
-        bs_sum += (p - y) ** 2
-    return bs_sum / len(predictions)
 
 def calculate_log_loss(predictions, actuals, eps=1e-15):
     ll_sum = 0.0
@@ -326,144 +314,70 @@ def calculate_log_loss(predictions, actuals, eps=1e-15):
         ll_sum += y * math.log(p_clipped) + (1 - y) * math.log(1 - p_clipped)
     return -ll_sum / len(predictions)
 
-def main():
-    n_sims = 100000
-    all_results = {}
+def calculate_brier_score(predictions, actuals):
+    bs_sum = 0.0
+    for team, p in predictions.items():
+        y = actuals[team]
+        bs_sum += (p - y) ** 2
+    return bs_sum / len(predictions)
+
+def evaluate_cross_val(elos_dict, s=1.0, sigma=0.0, n_sims=30000):
+    # Folds definitions (leave one out)
+    # Fold 1: Test 2014, Train 2018+2022
+    # Fold 2: Test 2018, Train 2014+2022
+    # Fold 3: Test 2022, Train 2014+2018
+    years = [2014, 2018, 2022]
+    fold_results = {}
     
-    # Store overall metrics
-    year_metrics = {}
-    
-    global_predicted_qualifiers_correct = 0
-    global_predicted_top2_match_count = 0
-    global_total_teams = 0
-    global_total_groups = 0
-    
-    all_qualify_preds = {}
-    all_qualify_actuals = {}
-    
-    all_first_preds = {}
-    all_first_actuals = {}
-    
-    print(f"Starting historical World Cup simulations ({n_sims:,} runs, s=0.58)...")
-    start_time = time.time()
-    
-    for year in [2014, 2018, 2022]:
-        print(f"Simulating {year} World Cup...")
-        all_results[year] = {}
-        year_actuals = actual_standings[year]
-        year_groups = groups_data[year]
-        year_elos = elo_ratings[year]
+    for test_year in years:
+        random.seed(42)  # Reset seed per fold for reproducibility
+        test_preds = {}
+        test_actuals = {}
+        test_first_preds = {}
+        test_first_actuals = {}
         
-        predicted_qualifiers_correct = 0
-        predicted_top2_match_count = 0
-        
-        year_qualify_preds = {}
-        year_qualify_actuals = {}
-        year_first_preds = {}
-        year_first_actuals = {}
-        
-        for group_name, teams in year_groups.items():
-            sim_res = simulate_group(teams, year_elos, n_sims, s=0.58)
-            all_results[year][group_name] = sim_res
-            
-            actual_order = year_actuals[group_name]
+        for group_name, teams in groups_data[test_year].items():
+            sim_res = simulate_group(teams, elos_dict[test_year], n_sims, s, sigma)
+            actual_order = actual_standings[test_year][group_name]
             actual_top2 = actual_order[:2]
             
-            # Predict top 2 based on highest simulated qualify probability
-            sorted_by_prob = sorted(teams, key=lambda t: sim_res[t]["qualify"], reverse=True)
-            predicted_top2 = sorted_by_prob[:2]
-            
-            # Count correct predicted qualifiers
             for t in teams:
                 is_actual_qualifier = 1 if t in actual_top2 else 0
                 is_actual_first = 1 if t == actual_order[0] else 0
+                test_preds[t] = sim_res[t]["qualify"]
+                test_actuals[t] = is_actual_qualifier
+                test_first_preds[t] = sim_res[t]["1st"]
+                test_first_actuals[t] = is_actual_first
                 
-                year_qualify_preds[t] = sim_res[t]["qualify"]
-                year_qualify_actuals[t] = is_actual_qualifier
-                all_qualify_preds[f"{year}_{t}"] = sim_res[t]["qualify"]
-                all_qualify_actuals[f"{year}_{t}"] = is_actual_qualifier
-                
-                year_first_preds[t] = sim_res[t]["1st"]
-                year_first_actuals[t] = is_actual_first
-                all_first_preds[f"{year}_{t}"] = sim_res[t]["1st"]
-                all_first_actuals[f"{year}_{t}"] = is_actual_first
-                
-                # Binary classification evaluation with 50% threshold
-                if (sim_res[t]["qualify"] > 0.5 and is_actual_qualifier == 1) or (sim_res[t]["qualify"] <= 0.5 and is_actual_qualifier == 0):
-                    predicted_qualifiers_correct += 1
-                    global_predicted_qualifiers_correct += 1
-                    
-            # Check how many of the top 2 teams by probability actually qualified
-            top2_match = len(set(predicted_top2) & set(actual_top2))
-            predicted_top2_match_count += top2_match
-            global_predicted_top2_match_count += top2_match
-            
-            global_total_teams += 4
-            global_total_groups += 1
-            
-        # Compute yearly validation metrics
-        year_qualify_brier = calculate_brier_score(year_qualify_preds, year_qualify_actuals)
-        year_qualify_loss = calculate_log_loss(year_qualify_preds, year_qualify_actuals)
+        ll = calculate_log_loss(test_preds, test_actuals)
+        bs = calculate_brier_score(test_preds, test_actuals)
+        fll = calculate_log_loss(test_first_preds, test_first_actuals)
         
-        year_first_brier = calculate_brier_score(year_first_preds, year_first_actuals)
-        year_first_loss = calculate_log_loss(year_first_preds, year_first_actuals)
-        
-        year_metrics[year] = {
-            "qualify_brier": year_qualify_brier,
-            "qualify_log_loss": year_qualify_loss,
-            "first_brier": year_first_brier,
-            "first_log_loss": year_first_loss,
-            "accuracy_qualifiers_threshold_50": predicted_qualifiers_correct / len(year_elos),
-            "correct_qualifiers_top2_predicted": predicted_top2_match_count
+        fold_results[test_year] = {
+            "qualify_log_loss": ll,
+            "qualify_brier": bs,
+            "first_log_loss": fll
         }
-        
-        print(f"  {year} Metrics:")
-        print(f"    Qualify Brier Score: {year_qualify_brier:.4f}")
-        print(f"    Qualify Log Loss   : {year_qualify_loss:.4f}")
-        print(f"    Qualify Accuracy (>50%): {predicted_qualifiers_correct / len(year_elos) * 100:.1f}%")
-        print(f"    Qualifiers Correctly Predicted (Top 2): {predicted_top2_match_count}/16")
-        
-    end_time = time.time()
-    elapsed = end_time - start_time
-    print(f"\nAll simulations completed in {elapsed:.2f} seconds.")
-    
-    # Global metrics
-    global_qualify_brier = calculate_brier_score(all_qualify_preds, all_qualify_actuals)
-    global_qualify_loss = calculate_log_loss(all_qualify_preds, all_qualify_actuals)
-    global_first_brier = calculate_brier_score(all_first_preds, all_first_actuals)
-    global_first_loss = calculate_log_loss(all_first_preds, all_first_actuals)
-    
-    overall_metrics = {
-        "global_qualify_brier": global_qualify_brier,
-        "global_qualify_log_loss": global_qualify_loss,
-        "global_first_brier": global_first_brier,
-        "global_first_log_loss": global_first_loss,
-        "global_accuracy_threshold_50": global_predicted_qualifiers_correct / global_total_teams,
-        "global_top2_match_rate": global_predicted_top2_match_count / (global_total_groups * 2),
-        "total_predicted_qualifiers_correct": global_predicted_top2_match_count,
-        "total_qualifiers": global_total_groups * 2,
-        "yearly_breakdown": year_metrics
-    }
-    
-    print("\nGlobal Summary Across 2014, 2018, and 2022:")
-    print(f"  Qualify Brier Score: {global_qualify_brier:.4f}")
-    print(f"  Qualify Log Loss   : {global_qualify_loss:.4f}")
-    print(f"  1st Place Brier Score: {global_first_brier:.4f}")
-    print(f"  1st Place Log Loss   : {global_first_loss:.4f}")
-    print(f"  Binary Classification Accuracy (>50%): {overall_metrics['global_accuracy_threshold_50'] * 100:.1f}%")
-    print(f"  Top 2 Match Rate: {overall_metrics['global_top2_match_rate'] * 100:.1f}% ({global_predicted_top2_match_count}/{global_total_groups * 2})")
-    
-    # Save simulated outcomes to JSON for the report
-    output_data = {
-        "metrics": overall_metrics,
-        "simulations": all_results,
-        "actuals": actual_standings,
-        "elos": elo_ratings
-    }
-    
-    with open("research/historical_validation_results.json", "w") as f:
-        json.dump(output_data, f, indent=2)
-    print("\nSaved simulation results to research/historical_validation_results.json")
+    return fold_results
+
+def main():
+    print("Evaluating Model Damping (a): scale s in [0.5, 0.6, 0.7, 0.8, 1.0]")
+    for elo_name, elos in [("Clean", elos_clean), ("Auditor", elos_auditor)]:
+        print(f"\n--- Ratings: {elo_name} ---")
+        for s in [0.5, 0.55, 0.58, 0.6, 0.65, 0.7, 0.8, 1.0]:
+            res = evaluate_cross_val(elos, s=s, sigma=0.0, n_sims=30000)
+            avg_ll = sum(res[y]["qualify_log_loss"] for y in res) / 3
+            avg_fll = sum(res[y]["first_log_loss"] for y in res) / 3
+            print(f"s={s:.2f} -- 2014: {res[2014]['qualify_log_loss']:.4f}, 2018: {res[2018]['qualify_log_loss']:.4f}, 2022: {res[2022]['qualify_log_loss']:.4f} -- Avg LL: {avg_ll:.4f}, Avg 1st LL: {avg_fll:.4f}")
+
+    print("\nEvaluating Rating Uncertainty (b): sigma in [20, 40, 50, 60, 80]")
+    for elo_name, elos in [("Clean", elos_clean), ("Auditor", elos_auditor)]:
+        print(f"\n--- Ratings: {elo_name} ---")
+        for sigma in [0.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0]:
+            res = evaluate_cross_val(elos, s=1.0, sigma=sigma, n_sims=30000)
+            avg_ll = sum(res[y]["qualify_log_loss"] for y in res) / 3
+            avg_fll = sum(res[y]["first_log_loss"] for y in res) / 3
+            print(f"sigma={sigma:.1f} -- 2014: {res[2014]['qualify_log_loss']:.4f}, 2018: {res[2018]['qualify_log_loss']:.4f}, 2022: {res[2022]['qualify_log_loss']:.4f} -- Avg LL: {avg_ll:.4f}, Avg 1st LL: {avg_fll:.4f}")
 
 if __name__ == "__main__":
     main()

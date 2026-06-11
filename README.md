@@ -8,7 +8,7 @@ A statistical forecasting engine and Monte Carlo simulator for the 48-team **202
 
 *   **Unbiased Simulation:** Runs a 100,000-run Monte Carlo simulation of all 12 groups, resolving standing ties using actual goal counts and randomized tie-breakers.
 *   **Stochastic Recovery:** Simulates player recovery curves (e.g., Neymar, Kudus, Davies) round-by-round, meaning teams gain or lose strength as players return to fitness.
-*   **Headline Standings:** Brazil is highly vulnerable in Group C (51% group-win chance vs Morocco's 44%) due to injuries, while the USMNT dominates Group D (73% group-win chance) on home soil. A depleted Netherlands team faces a tight three-way race with Sweden and Japan in Group F.
+*   **Headline Standings:** Brazil is highly vulnerable in Group C (47% group-win chance vs Morocco's 41%) due to injuries, while the USMNT dominates Group D (57% group-win chance) on home soil. A depleted Netherlands team faces a tight three-way race with Sweden and Japan in Group F.
 
 ---
 
@@ -64,3 +64,19 @@ Running the simulator will output a JSON structure detailing the simulated avera
 Predicting international football outcomes is difficult due to low scorelines and small sample sizes. Relying on FIFA rankings or simple head-to-head history introduces massive noise. 
 
 This engine uses **Elo-based rating differences** as the foundation. By converting these ratings into expected goals (xG) and simulating matches through a bivariate Poisson process, the model captures the full probability distribution of goal differences. This is vital for simulating the 2026 World Cup's 48-team format, where the eight best third-placed teams qualify for the Round of 32 based on goal difference and goals scored.
+
+---
+
+## CHANGELOG
+
+### [v1.1.0] - 2026-06-11
+- **Calibration Engine Upgrade:** 
+  - Replaced flat uncalibrated Elo scaling ($s=1.0$) with calibrated damping factor $s=0.58$, determined via leave-one-tournament-out cross-validation to minimize out-of-sample Log Loss.
+  - Upgraded expected goals from constant 2.5 goals per match to variable goals model $G(d) = 2.37943 + 0.001373 \cdot |d|$, where $d$ is the rating difference.
+- **Round of 32 Advancement Integration:**
+  - Replaced independent group simulations with joint 12-group tournament simulation.
+  - Implemented wild-card pool ranking for all 12 third-placed teams using points $\rightarrow$ Goal Difference $\rightarrow$ Goals Scored $\rightarrow$ random tie-breaker.
+  - Added tracking and outputting of overall `r32_adv` probabilities (qualifying directly in top 2 or advancing via top 8 third-place spots).
+- **Validation Audit Correction:**
+  - Corrected historical report stats to match true out-of-sample metrics (Log Loss = 0.5884, Brier = 0.2034, binary accuracy = 66.7%).
+  - Corrected baseline report HFA probabilities and added reliability tables comparing baseline vs calibrated predictions.

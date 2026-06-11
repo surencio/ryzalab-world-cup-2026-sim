@@ -6,8 +6,6 @@ import json
 random.seed(42)
 
 # Define the groups and their teams with base ratings
-# In the new model, some teams have stochastic roster hazards
-# Format: {Team: (base_elo, {player_name: (probs, deduction)})}
 stochastic_rosters = {
     "Brazil": ("Neymar", [0.15, 0.50, 0.75], 60),  # Base Elo is 1980 (2020 - 40 permanent injuries)
     "Canada": ("Davies", [0.40, 0.75, 0.90], 30),  # Base Elo is 1880 (1780 + 100 HFA)
@@ -102,10 +100,6 @@ def get_group_pairings(group_name, teams):
     ]
     
     if group_name == "Group B":
-        # Switzerland (0), Canada (1), Bosnia (2), Qatar (3)
-        # R1: Canada vs Bosnia, Switzerland vs Qatar
-        # R2: Canada vs Qatar, Switzerland vs Bosnia
-        # R3: Canada vs Switzerland, Bosnia vs Qatar
         return [
             (teams[1], teams[2], 0),
             (teams[0], teams[3], 0),
@@ -115,10 +109,6 @@ def get_group_pairings(group_name, teams):
             (teams[2], teams[3], 2)
         ]
     elif group_name == "Group C":
-        # Morocco (0), Brazil (1), Scotland (2), Haiti (3)
-        # R1: Brazil vs Morocco, Scotland vs Haiti
-        # R2: Brazil vs Haiti, Morocco vs Scotland
-        # R3: Brazil vs Scotland, Morocco vs Haiti
         return [
             (teams[1], teams[0], 0),
             (teams[2], teams[3], 0),
@@ -128,10 +118,6 @@ def get_group_pairings(group_name, teams):
             (teams[0], teams[3], 2)
         ]
     elif group_name == "Group L":
-        # England (0), Croatia (1), Panama (2), Ghana (3)
-        # R1: England vs Croatia, Panama vs Ghana
-        # R2: England vs Ghana, Croatia vs Panama
-        # R3: England vs Panama, Croatia vs Ghana
         return [
             (teams[0], teams[1], 0),
             (teams[2], teams[3], 0),
@@ -157,69 +143,6 @@ def get_base_elo(team, group_teams):
     else:
         return group_teams[team][1]
 
-# ----------------- OLD MODEL SIMULATION (100k runs) -----------------
-def get_match_probs_old(elo_a, elo_b):
-    d = elo_a - elo_b
-    expected_score_a = 1.0 / (1.0 + 10**(-d / 400.0))
-    p_draw = 1.0 / (1.0 + math.exp(1.1 + 0.0035 * abs(d)))
-    p_win_a = expected_score_a - 0.5 * p_draw
-    p_win_b = 1.0 - expected_score_a - 0.5 * p_draw
-    
-    p_win_a = max(0.0, p_win_a)
-    p_win_b = max(0.0, p_win_b)
-    total = p_win_a + p_win_b + p_draw
-    return p_win_a / total, p_draw / total, p_win_b / total
-
-def random_choice(options, weights):
-    r = random.random()
-    cumulative = 0.0
-    for option, weight in zip(options, weights):
-        cumulative += weight
-        if r < cumulative:
-            return option
-    return options[-1]
-
-def simulate_group_old(group_name, group_teams, n_sims=100000):
-    teams = list(group_teams.keys())
-    standings_freq = {team: [0, 0, 0, 0] for team in teams}
-    total_points = {team: 0 for team in teams}
-    pairings = get_group_pairings(group_name, teams)
-            
-    for _ in range(n_sims):
-        points = {team: 0 for team in teams}
-        for team_a, team_b, rd in pairings:
-            elo_a = group_teams[team_a][1]
-            elo_b = group_teams[team_b][1]
-            p_win, p_draw, p_loss = get_match_probs_old(elo_a, elo_b)
-            
-            outcome = random_choice(['win', 'draw', 'loss'], [p_win, p_draw, p_loss])
-            if outcome == 'win':
-                points[team_a] += 3
-            elif outcome == 'draw':
-                points[team_a] += 1
-                points[team_b] += 1
-            else:
-                points[team_b] += 3
-                
-        shuffled_teams = list(teams)
-        random.shuffle(shuffled_teams)
-        sorted_teams = sorted(shuffled_teams, key=lambda t: (points[t], group_teams[t][1]), reverse=True)
-        for rank, team in enumerate(sorted_teams):
-            standings_freq[team][rank] += 1
-            total_points[team] += points[team]
-            
-    results = {}
-    for team in teams:
-        results[team] = {
-            "avg_points": total_points[team] / n_sims,
-            "1st": standings_freq[team][0] / n_sims,
-            "2nd": standings_freq[team][1] / n_sims,
-            "3rd": standings_freq[team][2] / n_sims,
-            "4th": standings_freq[team][3] / n_sims,
-        }
-    return results
-
-# ----------------- NEW DIXON-COLES + STOCHASTIC MODEL (100k runs + cache) -----------------
 def poisson_pmf(k, mu):
     if mu <= 0:
         return 1.0 if k == 0 else 0.0
@@ -238,7 +161,6 @@ def sample_dixon_coles(lambda_a, lambda_b, rho=-0.04):
         for x in range(10):
             for y in range(10):
                 p = poisson_pmf(x, lambda_a) * poisson_pmf(y, lambda_b)
-                # Dixon-Coles adjustment
                 if x == 0 and y == 0:
                     p *= (1 - lambda_a * lambda_b * rho)
                 elif x == 1 and y == 0:
@@ -277,79 +199,230 @@ def get_match_ratings(team_a, team_b, round_idx, group_teams, team_u=None):
 
     return get_team_elo(team_a, round_idx), get_team_elo(team_b, round_idx)
 
-def simulate_group_new(group_name, group_teams, n_sims=100000):
-    teams = list(group_teams.keys())
-    standings_freq = {team: [0, 0, 0, 0] for team in teams}
-    total_points = {team: 0 for team in teams}
-    pairings = get_group_pairings(group_name, teams)
-    
+# ----------------- OLD MODEL SIMULATION (Uncalibrated, constant 2.5 goals, s=1.0) -----------------
+def simulate_tournament_old(n_sims=100000):
+    all_teams = []
+    team_to_group = {}
+    for g_name, g_teams in groups.items():
+        for t in g_teams:
+            all_teams.append(t)
+            team_to_group[t] = g_name
+
+    standings_freq = {team: [0, 0, 0, 0] for team in all_teams}
+    total_points = {team: 0 for team in all_teams}
+    r32_adv_count = {team: 0 for team in all_teams}
+
     for _ in range(n_sims):
-        points = {team: 0 for team in teams}
-        gd = {team: 0 for team in teams}
-        gs = {team: 0 for team in teams}
-        team_u = {team: random.random() for team in teams}
+        third_place_teams = []
+        direct_qualifiers = set()
         
-        for team_a, team_b, rd in pairings:
-            elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams, team_u)
-            r = 10**((elo_a - elo_b) / 400.0)
-            lambda_b = 2.5 / (1.0 + r)
-            lambda_a = 2.5 - lambda_b
+        for group_name, group_teams in groups.items():
+            teams = list(group_teams.keys())
+            pairings = get_group_pairings(group_name, teams)
             
-            goals_a, goals_b = sample_dixon_coles(lambda_a, lambda_b)
+            points = {team: 0 for team in teams}
+            gd = {team: 0 for team in teams}
+            gs = {team: 0 for team in teams}
+            team_u = {team: random.random() for team in teams}
             
-            gs[team_a] += goals_a
-            gs[team_b] += goals_b
-            gd[team_a] += goals_a - goals_b
-            gd[team_b] += goals_b - goals_a
-            
-            if goals_a > goals_b:
-                points[team_a] += 3
-            elif goals_a < goals_b:
-                points[team_b] += 3
-            else:
-                points[team_a] += 1
-                points[team_b] += 1
+            for team_a, team_b, rd in pairings:
+                elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams, team_u)
+                r = 10**((elo_a - elo_b) / 400.0)
+                lambda_b = 2.5 / (1.0 + r)
+                lambda_a = 2.5 - lambda_b
                 
-        shuffled_teams = list(teams)
-        random.shuffle(shuffled_teams)
-        
-        sorted_teams = sorted(
-            shuffled_teams, 
-            key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams)), 
+                goals_a, goals_b = sample_dixon_coles(lambda_a, lambda_b)
+                
+                gs[team_a] += goals_a
+                gs[team_b] += goals_b
+                gd[team_a] += goals_a - goals_b
+                gd[team_b] += goals_b - goals_a
+                
+                if goals_a > goals_b:
+                    points[team_a] += 3
+                elif goals_a < goals_b:
+                    points[team_b] += 3
+                else:
+                    points[team_a] += 1
+                    points[team_b] += 1
+                    
+            shuffled_teams = list(teams)
+            random.shuffle(shuffled_teams)
+            
+            sorted_teams = sorted(
+                shuffled_teams,
+                key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams)),
+                reverse=True
+            )
+            
+            for rank, team in enumerate(sorted_teams):
+                standings_freq[team][rank] += 1
+                total_points[team] += points[team]
+                
+            direct_qualifiers.add(sorted_teams[0])
+            direct_qualifiers.add(sorted_teams[1])
+            
+            t3 = sorted_teams[2]
+            third_place_teams.append({
+                "team": t3,
+                "points": points[t3],
+                "gd": gd[t3],
+                "gs": gs[t3]
+            })
+
+        # Rank thirds
+        ranked_thirds = sorted(
+            third_place_teams,
+            key=lambda x: (x["points"], x["gd"], x["gs"], random.random()),
             reverse=True
         )
-        for rank, team in enumerate(sorted_teams):
-            standings_freq[team][rank] += 1
-            total_points[team] += points[team]
-            
+        advancing_thirds = set(item["team"] for item in ranked_thirds[:8])
+        
+        for team in direct_qualifiers:
+            r32_adv_count[team] += 1
+        for team in advancing_thirds:
+            r32_adv_count[team] += 1
+
     results = {}
-    for team in teams:
-        results[team] = {
-            "avg_points": total_points[team] / n_sims,
-            "1st": standings_freq[team][0] / n_sims,
-            "2nd": standings_freq[team][1] / n_sims,
-            "3rd": standings_freq[team][2] / n_sims,
-            "4th": standings_freq[team][3] / n_sims,
-        }
+    for group_name, group_teams in groups.items():
+        results[group_name] = {}
+        for team in group_teams.keys():
+            results[group_name][team] = {
+                "avg_points": total_points[team] / n_sims,
+                "1st": standings_freq[team][0] / n_sims,
+                "2nd": standings_freq[team][1] / n_sims,
+                "3rd": standings_freq[team][2] / n_sims,
+                "4th": standings_freq[team][3] / n_sims,
+                "r32_adv": r32_adv_count[team] / n_sims
+            }
     return results
 
-# Run both simulations and compile comparison
-comparison = {}
-for group_name, group_teams in groups.items():
-    old_results = simulate_group_old(group_name, group_teams)
-    new_results = simulate_group_new(group_name, group_teams)
+# ----------------- NEW CALIBRATED MODEL SIMULATION (s=0.58, variable goals G(d)) -----------------
+def simulate_tournament_new(n_sims=100000):
+    all_teams = []
+    team_to_group = {}
+    for g_name, g_teams in groups.items():
+        for t in g_teams:
+            all_teams.append(t)
+            team_to_group[t] = g_name
+
+    standings_freq = {team: [0, 0, 0, 0] for team in all_teams}
+    total_points = {team: 0 for team in all_teams}
+    r32_adv_count = {team: 0 for team in all_teams}
+
+    for _ in range(n_sims):
+        third_place_teams = []
+        direct_qualifiers = set()
+        
+        for group_name, group_teams in groups.items():
+            teams = list(group_teams.keys())
+            pairings = get_group_pairings(group_name, teams)
+            
+            points = {team: 0 for team in teams}
+            gd = {team: 0 for team in teams}
+            gs = {team: 0 for team in teams}
+            team_u = {team: random.random() for team in teams}
+            
+            for team_a, team_b, rd in pairings:
+                elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams, team_u)
+                r = 10**((0.58 * (elo_a - elo_b)) / 400.0)
+                
+                # Variable goals G(d)
+                diff = abs(elo_a - elo_b)
+                g_d = 2.37943 + 0.001373 * diff
+                
+                lambda_b = g_d / (1.0 + r)
+                lambda_a = g_d - lambda_b
+                
+                goals_a, goals_b = sample_dixon_coles(lambda_a, lambda_b)
+                
+                gs[team_a] += goals_a
+                gs[team_b] += goals_b
+                gd[team_a] += goals_a - goals_b
+                gd[team_b] += goals_b - goals_a
+                
+                if goals_a > goals_b:
+                    points[team_a] += 3
+                elif goals_a < goals_b:
+                    points[team_b] += 3
+                else:
+                    points[team_a] += 1
+                    points[team_b] += 1
+                    
+            shuffled_teams = list(teams)
+            random.shuffle(shuffled_teams)
+            
+            sorted_teams = sorted(
+                shuffled_teams,
+                key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams)),
+                reverse=True
+            )
+            
+            for rank, team in enumerate(sorted_teams):
+                standings_freq[team][rank] += 1
+                total_points[team] += points[team]
+                
+            direct_qualifiers.add(sorted_teams[0])
+            direct_qualifiers.add(sorted_teams[1])
+            
+            t3 = sorted_teams[2]
+            third_place_teams.append({
+                "team": t3,
+                "points": points[t3],
+                "gd": gd[t3],
+                "gs": gs[t3]
+            })
+
+        # Rank thirds
+        ranked_thirds = sorted(
+            third_place_teams,
+            key=lambda x: (x["points"], x["gd"], x["gs"], random.random()),
+            reverse=True
+        )
+        advancing_thirds = set(item["team"] for item in ranked_thirds[:8])
+        
+        for team in direct_qualifiers:
+            r32_adv_count[team] += 1
+        for team in advancing_thirds:
+            r32_adv_count[team] += 1
+
+    results = {}
+    for group_name, group_teams in groups.items():
+        results[group_name] = {}
+        for team in group_teams.keys():
+            results[group_name][team] = {
+                "avg_points": total_points[team] / n_sims,
+                "1st": standings_freq[team][0] / n_sims,
+                "2nd": standings_freq[team][1] / n_sims,
+                "3rd": standings_freq[team][2] / n_sims,
+                "4th": standings_freq[team][3] / n_sims,
+                "r32_adv": r32_adv_count[team] / n_sims
+            }
+    return results
+
+if __name__ == "__main__":
+    # Fix seed for reproducibility
+    random.seed(42)
     
-    comparison[group_name] = {}
-    for team in group_teams.keys():
-        comparison[group_name][team] = {
-            "old": old_results[team],
-            "new": new_results[team],
-            "shift_1st": new_results[team]["1st"] - old_results[team]["1st"],
-            "shift_points": new_results[team]["avg_points"] - old_results[team]["avg_points"]
-        }
-
-# Write comparison to file
-with open("research/comparison_results.json", "w") as f:
-    json.dump(comparison, f, indent=2)
-
-print(json.dumps(comparison, indent=2))
+    n_sims = 100000
+    print(f"Running old and new models ({n_sims:,} runs each) for comparison...")
+    
+    old_results = simulate_tournament_old(n_sims)
+    new_results = simulate_tournament_new(n_sims)
+    
+    comparison = {}
+    for group_name, group_teams in groups.items():
+        comparison[group_name] = {}
+        for team in group_teams.keys():
+            comparison[group_name][team] = {
+                "old": old_results[group_name][team],
+                "new": new_results[group_name][team],
+                "shift_1st": new_results[group_name][team]["1st"] - old_results[group_name][team]["1st"],
+                "shift_points": new_results[group_name][team]["avg_points"] - old_results[group_name][team]["avg_points"]
+            }
+            
+    # Write comparison to file
+    with open("research/comparison_results.json", "w") as f:
+        json.dump(comparison, f, indent=2)
+        
+    print("Saved comparison results to research/comparison_results.json")
