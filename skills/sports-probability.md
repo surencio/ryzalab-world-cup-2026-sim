@@ -29,7 +29,7 @@ $$P(X=x, Y=y) = \tau(x, y, \lambda, \mu) \frac{\lambda^x e^{-\lambda}}{x!} \frac
 Where:
 *   $\lambda, \mu$ are the expected goals (xG) for Team A and Team B, derived from adjusted Elo ratings $R_A, R_B$:
     - **Calibrated Damping Factor ($s=0.58$)**: Compress rating differences to avoid overconfidence: $\lambda / \mu = 10^{(s \cdot (R_A - R_B))/400}$
-    - **Variable Expected Goals Model ($G(d)$)**: Replace constant 2.5 average goals with a linear rating-difference model: $G(d) = \lambda + \mu = 2.37943 + 0.001373 \cdot |R_A - R_B|$, where $d = R_A - R_B$.
+    - **Variable Expected Goals Model ($G(d)$)**: Replace constant 2.5 average goals with a linear rating-difference model: $G(d) = \lambda + \mu = 2.38364 + 0.0013636 \cdot |R_A - R_B|$, where $d = R_A - R_B$.
 *   $\tau(x, y, \lambda, \mu)$ is the Dixon-Coles correlation factor adjusting for low-scoring dependence (using a baseline parameter $\rho = -0.04$ to correct draw inflation):
     - $\tau(0,0) = 1 - \lambda \mu \rho$
     - $\tau(1,0) = 1 + \mu \rho$

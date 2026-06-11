@@ -97,7 +97,7 @@ elo_ratings = {
         "Iran": 1798,
         "United States": 1796,
         "Wales": 1789,
-        "Argentina": 2143,
+        "Argentina": 2144,
         "Saudi Arabia": 1636,
         "Mexico": 1808,
         "Poland": 1813,
@@ -105,7 +105,7 @@ elo_ratings = {
         "Australia": 1720,
         "Denmark": 1971,
         "Tunisia": 1705,
-        "Spain": 2049,
+        "Spain": 1997,
         "Costa Rica": 1743,
         "Germany": 1962,
         "Japan": 1788,
@@ -113,7 +113,7 @@ elo_ratings = {
         "Canada": 1775,
         "Morocco": 1764,
         "Croatia": 1926,
-        "Brazil": 2169,
+        "Brazil": 2133,
         "Serbia": 1899,
         "Switzerland": 1901,
         "Cameroon": 1607,
@@ -265,7 +265,7 @@ def simulate_group(group_teams, elos, n_sims=100000, s=0.58):
             
             # Variable goals G(d)
             diff = abs(elo_a - elo_b)
-            g_d = 2.37943 + 0.001373 * diff
+            g_d = 2.38364 + 0.0013636 * diff
             
             lambda_b = g_d / (1.0 + r)
             lambda_a = g_d - lambda_b

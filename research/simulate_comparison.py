@@ -329,7 +329,7 @@ def simulate_tournament_new(n_sims=100000):
                 
                 # Variable goals G(d)
                 diff = abs(elo_a - elo_b)
-                g_d = 2.37943 + 0.001373 * diff
+                g_d = 2.38364 + 0.0013636 * diff
                 
                 lambda_b = g_d / (1.0 + r)
                 lambda_a = g_d - lambda_b

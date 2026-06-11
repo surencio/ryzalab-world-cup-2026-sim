@@ -31,7 +31,7 @@ For key players with questionable fitness or returns, availability is simulated 
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Mexico** | 1810 / 1910 | 5.2 | 43% | 28% | 18% | 10% | 86% |
 | **Czechia** | 1790 / 1840 | 4.4 | 27% | 29% | 25% | 18% | 75% |
-| **South Korea** | 1800 / 1800 | 3.9 | 20% | 26% | 29% | 24% | 68% |
+| **South Korea** | 1800 / 1800 | 3.9 | 21% | 26% | 29% | 24% | 68% |
 | **South Africa** | 1700 / 1700 | 2.8 | 9% | 17% | 27% | 47% | 44% |
 
 *   **Analysis:** Mexico is a heavy favorite to top Group A on home soil. South Korea and Czechia will battle for 2nd, but Schick's return shifts the balance toward Czechia (29% to finish 2nd).
@@ -74,7 +74,7 @@ For key players with questionable fitness or returns, availability is simulated 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th | R32 Adv |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **United States** | 1840 / 1980 | 5.9 | 57% | 24% | 13% | 6% | 91% |
-| **Türkiye** | 1810 / 1810 | 3.9 | 18% | 29% | 28% | 25% | 67% |
+| **Türkiye** | 1810 / 1810 | 3.9 | 18% | 29% | 28% | 24% | 67% |
 | **Australia** | 1770 / 1770 | 3.4 | 13% | 24% | 30% | 32% | 58% |
 | **Paraguay** | 1750 / 1750 | 3.2 | 11% | 22% | 29% | 37% | 53% |
 
@@ -88,11 +88,11 @@ For key players with questionable fitness or returns, availability is simulated 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th | R32 Adv |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Germany** | 1970 / 1935 | 5.8 | 50% | 29% | 16% | 5% | 92% |
-| **Ecuador** | 1850 / 1850 | 4.9 | 29% | 35% | 26% | 10% | 84% |
-| **Ivory Coast** | 1780 / 1780 | 4.1 | 18% | 28% | 36% | 17% | 72% |
+| **Ecuador** | 1850 / 1850 | 4.9 | 29% | 34% | 26% | 10% | 84% |
+| **Ivory Coast** | 1780 / 1780 | 4.1 | 18% | 28% | 36% | 17% | 73% |
 | **Curaçao** | 1560 / 1560 | 1.8 | 3% | 8% | 21% | 68% | 23% |
 
-*   **Analysis:** Germany takes 1st place in 50% of simulations. Ecuador is secure in 2nd place (35%), while Ivory Coast is highly likely to advance as one of the best 3rd-placed teams (72% overall advancement chance, with a 36% chance of finishing 3rd).
+*   **Analysis:** Germany takes 1st place in 50% of simulations. Ecuador is secure in 2nd place (34%), while Ivory Coast is highly likely to advance as one of the best 3rd-placed teams (73% overall advancement chance, with a 36% chance of finishing 3rd).
 
 ---
 
@@ -103,7 +103,7 @@ For key players with questionable fitness or returns, availability is simulated 
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Netherlands** | 1980 / 1885 | 4.9 | 37% | 28% | 21% | 14% | 81% |
 | **Sweden** | 1830 / 1830 | 4.2 | 26% | 27% | 25% | 22% | 72% |
-| **Japan** | 1880 / 1820 | 4.1 | 24% | 26% | 27% | 24% | 70% |
+| **Japan** | 1880 / 1820 | 4.1 | 24% | 26% | 27% | 23% | 70% |
 | **Tunisia** | 1740 / 1740 | 3.2 | 13% | 19% | 27% | 40% | 51% |
 
 *   **Analysis:** The Netherlands' massive injury list (down to 1885 Elo) has severely eroded their dominance, dropping their group-win probability to 37%. Sweden (26% to win) and Japan (24% to win) are in a prime position to challenge the Dutch, making Group F a highly competitive three-way race.
@@ -131,7 +131,7 @@ For key players with questionable fitness or returns, availability is simulated 
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Spain** | 2150 / 2150 | 6.9 | 67% | 27% | 5% | 1% | 98% |
 | **Uruguay** | 2000 / 2000 | 5.5 | 29% | 52% | 15% | 4% | 92% |
-| **Saudi Arabia** | 1710 / 1710 | 2.5 | 3% | 14% | 46% | 37% | 41% |
+| **Saudi Arabia** | 1710 / 1710 | 2.5 | 3% | 14% | 47% | 37% | 41% |
 | **Cape Verde** | 1630 / 1630 | 1.8 | 1% | 8% | 33% | 58% | 24% |
 
 *   **Analysis:** Spain and Uruguay have a combined >90% chance of taking the top two spots. The only question is who wins the head-to-head for 1st (Spain favored at 67%).
@@ -172,7 +172,7 @@ For key players with questionable fitness or returns, availability is simulated 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th | R32 Adv |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Portugal** | 2030 / 2030 | 5.9 | 48% | 35% | 13% | 4% | 93% |
-| **Colombia** | 2010 / 2010 | 5.7 | 43% | 38% | 14% | 5% | 91% |
+| **Colombia** | 2010 / 2010 | 5.7 | 43% | 38% | 14% | 5% | 92% |
 | **Uzbekistan** | 1730 / 1730 | 2.6 | 5% | 15% | 38% | 42% | 42% |
 | **DR Congo** | 1710 / 1710 | 2.4 | 4% | 13% | 35% | 48% | 37% |
 
@@ -185,10 +185,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th | R32 Adv |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **England** | 2050 / 2050* | 6.4 | 60% | 27% | 9% | 3% | 95% |
+| **England** | 2050 / 2050* | 6.4 | 60% | 28% | 9% | 3% | 95% |
 | **Croatia** | 1930 / 1930 | 5.1 | 29% | 42% | 20% | 9% | 86% |
 | **Panama** | 1710 / 1710 | 2.7 | 6% | 17% | 37% | 41% | 44% |
-| **Ghana** | 1710 / 1710* | 2.5 | 4% | 14% | 34% | 47% | 38% |
+| **Ghana** | 1710 / 1710* | 2.5 | 5% | 14% | 34% | 47% | 38% |
 
 *\*England starts at 2050 Elo, subject to a -10 Elo penalty if Bukayo Saka is stochastically simulated as out. Ghana starts at 1710 Elo, subject to a -40 Elo penalty if Mohammed Kudus is out.*
 *   **Analysis:** England has deep offensive rotation to absorb Saka's minor fitness issue, topping the group in 60% of simulations. Croatia is secure in 2nd (42%). Modeling Kudus' injury stochastically drops Ghana's average points to 2.5, making Panama the favorite to take 3rd.

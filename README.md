@@ -72,11 +72,11 @@ This engine uses **Elo-based rating differences** as the foundation. By converti
 ### [v1.1.0] - 2026-06-11
 - **Calibration Engine Upgrade:** 
   - Replaced flat uncalibrated Elo scaling ($s=1.0$) with calibrated damping factor $s=0.58$, determined via leave-one-tournament-out cross-validation to minimize out-of-sample Log Loss.
-  - Upgraded expected goals from constant 2.5 goals per match to variable goals model $G(d) = 2.37943 + 0.001373 \cdot |d|$, where $d$ is the rating difference.
+  - Upgraded expected goals from constant 2.5 goals per match to variable goals model $G(d) = 2.38364 + 0.0013636 \cdot |d|$, where $d$ is the rating difference.
 - **Round of 32 Advancement Integration:**
   - Replaced independent group simulations with joint 12-group tournament simulation.
   - Implemented wild-card pool ranking for all 12 third-placed teams using points $\rightarrow$ Goal Difference $\rightarrow$ Goals Scored $\rightarrow$ random tie-breaker.
   - Added tracking and outputting of overall `r32_adv` probabilities (qualifying directly in top 2 or advancing via top 8 third-place spots).
 - **Validation Audit Correction:**
-  - Corrected historical report stats to match true out-of-sample metrics (Log Loss = 0.5884, Brier = 0.2034, binary accuracy = 66.7%).
+  - Corrected historical report stats to match true globally calibrated metrics (Log Loss = 0.5895, Brier = 0.2037, binary accuracy = 66.7%).
   - Corrected baseline report HFA probabilities and added reliability tables comparing baseline vs calibrated predictions.

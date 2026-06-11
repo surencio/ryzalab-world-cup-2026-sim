@@ -27,11 +27,11 @@ elos = {
     2022: {
         "Qatar": 1680 + HFA, "Ecuador": 1832, "Senegal": 1684, "Netherlands": 2040,
         "England": 1919, "Iran": 1798, "United States": 1796, "Wales": 1789,
-        "Argentina": 2143, "Saudi Arabia": 1636, "Mexico": 1808, "Poland": 1813,
+        "Argentina": 2144, "Saudi Arabia": 1636, "Mexico": 1808, "Poland": 1813,
         "France": 2004, "Australia": 1720, "Denmark": 1971, "Tunisia": 1705,
-        "Spain": 2049, "Costa Rica": 1743, "Germany": 1962, "Japan": 1788,
+        "Spain": 1997, "Costa Rica": 1743, "Germany": 1962, "Japan": 1788,
         "Belgium": 2006, "Canada": 1775, "Morocco": 1764, "Croatia": 1926,
-        "Brazil": 2169, "Serbia": 1899, "Switzerland": 1901, "Cameroon": 1607,
+        "Brazil": 2133, "Serbia": 1899, "Switzerland": 1901, "Cameroon": 1607,
         "Portugal": 2005, "Ghana": 1564, "Uruguay": 1935, "South Korea": 1786
     }
 }
