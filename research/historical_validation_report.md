@@ -14,7 +14,7 @@ The validation demonstrates that the calibrated Dixon-Coles goal model (with Elo
 *   **Qualifier Match Rate (Top 2, In-Sample):** **68.8%** (33 out of 48) of the actual qualifiers were correctly identified by selecting the top two teams by simulated probability in each group.
 *   **Global Qualify Brier Score (In-Sample):** **0.2037** (a significant improvement over both a random-guessing baseline of 0.2500 and the uncalibrated model's 0.2158).
 *   **Global Qualify Log Loss (In-Sample):** **0.5895**, demonstrating excellent calibration and successfully addressing the overconfidence of the uncalibrated model (**0.6435**).
-*   **Out-of-Sample LOTO Mean Log Loss:** **0.6044** (using fold-specific training optimizations), showing a major improvement over the baseline model and outperforming a uniform random-guessing baseline across all three tournaments.
+*   **Out-of-Sample LOTO Mean Log Loss:** **0.6041** (using fold-specific training optimizations), showing a major improvement over the baseline model and outperforming a uniform random-guessing baseline across all three tournaments.
 
 Despite strong overall performance, the model remains sensitive to tournament volatility and must deal with "black swan" events—such as Costa Rica winning Group D in 2014, Germany failing to qualify in 2018, or Japan winning Group E in 2022.
 
