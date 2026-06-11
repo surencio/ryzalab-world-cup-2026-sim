@@ -17,8 +17,8 @@ Qualitative context (e.g., a star player's year-long injury or a manager transit
 ### 1. Star Player Injury & Stochastic Roster Modeling
 Rather than using static Elo point deductions for players with questionable fitness or partial returns, model availability stochastically per match. 
 1. Define a player's availability probability $P_{\text{avail}}$ per group match (Game 1, 2, and 3) based on clinical and training reports (e.g., Kudus returning in Game 3: $P = [0.10, 0.40, 0.85]$).
-2. In each Monte Carlo run, draw a random uniform variable $U \sim \text{Uniform}(0, 1)$.
-3. If $U > P_{\text{avail}}$ for that match, apply the **Elo Penalty** ($\Delta R_p$) dynamically for that specific match calculation:
+2. In each tournament simulation run, draw a single random uniform variable $u \sim \text{Uniform}(0, 1)$ for the team.
+3. In match $r$ of the tournament (where $r \in \{0, 1, 2\}$), if $u > P_{\text{avail}}[r]$, apply the **Elo Penalty** ($\Delta R_p$) dynamically for that match. This monotonic coupling ensures that if a player recovers and becomes available in match $r$, they remain available for all subsequent matches (since $P_{\text{avail}}$ is non-decreasing).
    $$\Delta R_p = E_{\text{squad}} \times S_{xG+xA} \times (1 - D_{\text{depth}})$$
    Where:
    *   $E_{\text{squad}}$: Squad rating scale factor (base of $150$ Elo points).

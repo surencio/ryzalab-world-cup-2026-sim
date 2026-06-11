@@ -30,7 +30,7 @@ Where:
 *   $\lambda, \mu$ are the expected goals (xG) for Team A and Team B, derived from adjusted Elo ratings $R_A, R_B$:
     - $\lambda + \mu = G_{\text{avg}} \approx 2.5$ (average tournament goals per game)
     - $\lambda / \mu = 10^{(R_A - R_B)/400}$
-*   $\tau(x, y, \lambda, \mu)$ is the Dixon-Coles correlation factor adjusting for low-scoring dependence (using a baseline parameter $\rho \approx -0.08$ to correct draw inflation):
+*   $\tau(x, y, \lambda, \mu)$ is the Dixon-Coles correlation factor adjusting for low-scoring dependence (using a baseline parameter $\rho \approx -0.04$ to correct draw inflation):
     - $\tau(0,0) = 1 - \lambda \mu \rho$
     - $\tau(1,0) = 1 + \mu \rho$
     - $\tau(0,1) = 1 + \lambda \rho$

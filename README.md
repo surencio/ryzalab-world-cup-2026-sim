@@ -6,7 +6,7 @@ A statistical forecasting engine and Monte Carlo simulator for the 48-team **202
 
 ## TL;DR
 
-*   **Unbiased Simulation:** Runs a 10,000-run Monte Carlo simulation of all 12 groups, resolving standing ties using actual goal counts and randomized tie-breakers.
+*   **Unbiased Simulation:** Runs a 100,000-run Monte Carlo simulation of all 12 groups, resolving standing ties using actual goal counts and randomized tie-breakers.
 *   **Stochastic Recovery:** Simulates player recovery curves (e.g., Neymar, Kudus, Davies) round-by-round, meaning teams gain or lose strength as players return to fitness.
 *   **Headline Standings:** Brazil is highly vulnerable in Group C (51% group-win chance vs Morocco's 44%) due to injuries, while the USMNT dominates Group D (73% group-win chance) on home soil. A depleted Netherlands team faces a tight three-way race with Sweden and Japan in Group F.
 
@@ -26,7 +26,7 @@ Most World Cup forecasting engines rely on static metrics (like historical FIFA 
 
 1.  **Dixon-Coles Bivariate Poisson Goal Model:** 
     *   Natively simulates goal counts ($X, Y$) for each match based on team strength differences rather than predicting flat win/draw/loss outcomes.
-    *   Applies a bivariate dependency correction factor ($\rho \approx -0.08$) to adjust for low-scoring draws (0-0, 1-1, 1-0, 0-1) typical in tournament football.
+    *   Applies a bivariate dependency correction factor ($\rho \approx -0.04$) to adjust for low-scoring draws (0-0, 1-1, 1-0, 0-1) typical in tournament football.
     *   Derives team expected goals ($\lambda, \mu$) dynamically from Elo ratings.
 2.  **Stochastic Roster Availability Modeling:** 
     *   Replaces arbitrary, static Elo point deductions with round-by-round availability probabilities ($P_{\text{avail}} = [p_1, p_2, p_3]$) for key players recovering from injury.

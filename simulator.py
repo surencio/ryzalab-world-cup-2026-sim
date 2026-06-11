@@ -6,7 +6,6 @@ import json
 random.seed(42)
 
 # Define the groups and their teams with base ratings
-# In this model, some teams have stochastic roster hazards
 # Format: {Team: (base_elo, {player_name: (probs, deduction)})}
 stochastic_rosters = {
     "Brazil": ("Neymar", [0.15, 0.50, 0.75], 60),  # Base Elo is 1980 (2020 - 40 permanent injuries)
@@ -24,7 +23,7 @@ groups = {
     },
     "Group B": {
         "Switzerland": (1900, 1900),
-        "Canada": (1780, 1880),  # Base Elo 1880, stochastic Davies -30
+        "Canada": (1780, 1850),  # Base Elo 1880, stochastic Davies -30
         "Bosnia & Herzegovina": (1730, 1730),
         "Qatar": (1720, 1720)
     },
@@ -47,7 +46,7 @@ groups = {
         "Curaçao": (1560, 1560)
     },
     "Group F": {
-        "Netherlands": (1980, 1885),
+        "Netherlands": (1980, 1920),
         "Sweden": (1830, 1830),
         "Japan": (1880, 1820),
         "Tunisia": (1740, 1740)
@@ -86,80 +85,13 @@ groups = {
         "England": (2050, 2040),  # Base Elo 2050, stochastic Saka -10
         "Croatia": (1930, 1930),
         "Panama": (1710, 1710),
-        "Ghana": (1710, 1690)  # Base Elo 1710, stochastic Kudus -40
+        "Ghana": (1710, 1670)  # Base Elo 1710, stochastic Kudus -40
     }
 }
 
-def poisson_pmf(k, mu):
-    if mu <= 0:
-        return 1.0 if k == 0 else 0.0
-    return (mu**k * math.exp(-mu)) / math.factorial(k)
-
-def sample_dixon_coles(lambda_a, lambda_b, rho=-0.08):
-    grid = {}
-    total = 0.0
-    for x in range(10):
-        for y in range(10):
-            p = poisson_pmf(x, lambda_a) * poisson_pmf(y, lambda_b)
-            # Dixon-Coles adjustment
-            if x == 0 and y == 0:
-                p *= (1 - lambda_a * lambda_b * rho)
-            elif x == 1 and y == 0:
-                p *= (1 + lambda_b * rho)
-            elif x == 0 and y == 1:
-                p *= (1 + lambda_a * rho)
-            elif x == 1 and y == 1:
-                p *= (1 - rho)
-            
-            p = max(0.0, p)
-            grid[(x, y)] = p
-            total += p
-            
-    options = list(grid.keys())
-    weights = [grid[opt] / total for opt in options]
-    
-    r = random.random()
-    cumulative = 0.0
-    for opt, w in zip(options, weights):
-        cumulative += w
-        if r < cumulative:
-            return opt
-    return options[-1]
-
-def get_match_ratings(team_a, team_b, round_idx, group_teams):
-    def get_team_elo(team, rd):
-        base, old_adj = group_teams[team]
-        # Set base Elo correctly for teams with stochastic rosters
-        if team == "Brazil":
-            current_base = 1980
-        elif team == "Canada":
-            current_base = 1880
-        elif team == "England":
-            current_base = 2050
-        elif team == "Ghana":
-            current_base = 1710
-        else:
-            current_base = old_adj
-            
-        # Sample player availability
-        if team in stochastic_rosters:
-            player, probs, deduction = stochastic_rosters[team]
-            prob_available = probs[rd]
-            if random.random() > prob_available:
-                return current_base - deduction
-        return current_base
-
-    return get_team_elo(team_a, round_idx), get_team_elo(team_b, round_idx)
-
-def simulate_group(group_teams, n_sims=10000):
-    teams = list(group_teams.keys())
-    standings_freq = {team: [0, 0, 0, 0] for team in teams}
-    total_points = {team: 0 for team in teams}
-    
-    # R1: 0-1, 2-3
-    # R2: 0-2, 1-3
-    # R3: 0-3, 1-2
-    pairings = [
+# Helper for standard & real World Cup group fixture order
+def get_group_pairings(group_name, teams):
+    default_pairings = [
         (teams[0], teams[1], 0),
         (teams[2], teams[3], 0),
         (teams[0], teams[2], 1),
@@ -168,13 +100,133 @@ def simulate_group(group_teams, n_sims=10000):
         (teams[1], teams[2], 2)
     ]
     
+    if group_name == "Group B":
+        # Switzerland (0), Canada (1), Bosnia (2), Qatar (3)
+        # R1: Canada vs Bosnia, Switzerland vs Qatar
+        # R2: Canada vs Qatar, Switzerland vs Bosnia
+        # R3: Canada vs Switzerland, Bosnia vs Qatar
+        return [
+            (teams[1], teams[2], 0),
+            (teams[0], teams[3], 0),
+            (teams[1], teams[3], 1),
+            (teams[0], teams[2], 1),
+            (teams[1], teams[0], 2),
+            (teams[2], teams[3], 2)
+        ]
+    elif group_name == "Group C":
+        # Morocco (0), Brazil (1), Scotland (2), Haiti (3)
+        # R1: Brazil vs Morocco, Scotland vs Haiti
+        # R2: Brazil vs Haiti, Morocco vs Scotland
+        # R3: Brazil vs Scotland, Morocco vs Haiti
+        return [
+            (teams[1], teams[0], 0),
+            (teams[2], teams[3], 0),
+            (teams[1], teams[3], 1),
+            (teams[0], teams[2], 1),
+            (teams[1], teams[2], 2),
+            (teams[0], teams[3], 2)
+        ]
+    elif group_name == "Group L":
+        # England (0), Croatia (1), Panama (2), Ghana (3)
+        # R1: England vs Croatia, Panama vs Ghana
+        # R2: England vs Ghana, Croatia vs Panama
+        # R3: England vs Panama, Croatia vs Ghana
+        return [
+            (teams[0], teams[1], 0),
+            (teams[2], teams[3], 0),
+            (teams[0], teams[3], 1),
+            (teams[1], teams[2], 1),
+            (teams[0], teams[2], 2),
+            (teams[1], teams[3], 2)
+        ]
+    
+    return default_pairings
+
+def get_base_elo(team, group_teams):
+    if team == "Brazil":
+        return 1980
+    elif team == "Canada":
+        return 1880
+    elif team == "England":
+        return 2050
+    elif team == "Ghana":
+        return 1710
+    elif team == "Netherlands":
+        return 1885
+    else:
+        return group_teams[team][1]
+
+def poisson_pmf(k, mu):
+    if mu <= 0:
+        return 1.0 if k == 0 else 0.0
+    return (mu**k * math.exp(-mu)) / math.factorial(k)
+
+# Memoization cache for Dixon-Coles grid and weights
+_dixon_coles_cache = {}
+
+def sample_dixon_coles(lambda_a, lambda_b, rho=-0.04):
+    key = (round(lambda_a, 5), round(lambda_b, 5))
+    if key in _dixon_coles_cache:
+        options, weights = _dixon_coles_cache[key]
+    else:
+        grid = {}
+        total = 0.0
+        for x in range(10):
+            for y in range(10):
+                p = poisson_pmf(x, lambda_a) * poisson_pmf(y, lambda_b)
+                # Dixon-Coles adjustment
+                if x == 0 and y == 0:
+                    p *= (1 - lambda_a * lambda_b * rho)
+                elif x == 1 and y == 0:
+                    p *= (1 + lambda_b * rho)
+                elif x == 0 and y == 1:
+                    p *= (1 + lambda_a * rho)
+                elif x == 1 and y == 1:
+                    p *= (1 - rho)
+                
+                p = max(0.0, p)
+                grid[(x, y)] = p
+                total += p
+                
+        options = list(grid.keys())
+        weights = [grid[opt] / total for opt in options]
+        _dixon_coles_cache[key] = (options, weights)
+        
+    r = random.random()
+    cumulative = 0.0
+    for opt, w in zip(options, weights):
+        cumulative += w
+        if r < cumulative:
+            return opt
+    return options[-1]
+
+def get_match_ratings(team_a, team_b, round_idx, group_teams, team_u=None):
+    def get_team_elo(team, rd):
+        base_elo = get_base_elo(team, group_teams)
+        if team in stochastic_rosters:
+            player, probs, deduction = stochastic_rosters[team]
+            prob_available = probs[rd]
+            u = team_u[team] if team_u is not None else random.random()
+            if u > prob_available:
+                return base_elo - deduction
+        return base_elo
+
+    return get_team_elo(team_a, round_idx), get_team_elo(team_b, round_idx)
+
+def simulate_group(group_name, group_teams, n_sims=100000):
+    teams = list(group_teams.keys())
+    standings_freq = {team: [0, 0, 0, 0] for team in teams}
+    total_points = {team: 0 for team in teams}
+    pairings = get_group_pairings(group_name, teams)
+    
     for _ in range(n_sims):
         points = {team: 0 for team in teams}
         gd = {team: 0 for team in teams}
         gs = {team: 0 for team in teams}
+        team_u = {team: random.random() for team in teams}
         
         for team_a, team_b, rd in pairings:
-            elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams)
+            elo_a, elo_b = get_match_ratings(team_a, team_b, rd, group_teams, team_u)
             r = 10**((elo_a - elo_b) / 400.0)
             lambda_b = 2.5 / (1.0 + r)
             lambda_a = 2.5 - lambda_b
@@ -197,10 +249,9 @@ def simulate_group(group_teams, n_sims=10000):
         shuffled_teams = list(teams)
         random.shuffle(shuffled_teams)
         
-        # Sort based on Points, GD, GS, and Elo
         sorted_teams = sorted(
             shuffled_teams, 
-            key=lambda t: (points[t], gd[t], gs[t], group_teams[t][1]), 
+            key=lambda t: (points[t], gd[t], gs[t], get_base_elo(t, group_teams)), 
             reverse=True
         )
         for rank, team in enumerate(sorted_teams):
@@ -221,6 +272,6 @@ def simulate_group(group_teams, n_sims=10000):
 if __name__ == "__main__":
     all_results = {}
     for group_name, group_teams in groups.items():
-        all_results[group_name] = simulate_group(group_teams)
+        all_results[group_name] = simulate_group(group_name, group_teams)
         
     print(json.dumps(all_results, indent=2))

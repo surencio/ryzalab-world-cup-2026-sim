@@ -31,7 +31,7 @@ For key players with questionable fitness or returns, availability is simulated 
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Mexico** | 1810 / 1910 | 5.9 | 53% | 27% | 15% | 5% |
 | **Czechia** | 1790 / 1840 | 4.6 | 26% | 34% | 27% | 13% |
-| **South Korea** | 1800 / 1800 | 3.9 | 17% | 27% | 34% | 21% |
+| **South Korea** | 1800 / 1800 | 3.9 | 16% | 28% | 34% | 22% |
 | **South Africa** | 1700 / 1700 | 2.1 | 4% | 11% | 25% | 60% |
 
 *   **Analysis:** Mexico is a heavy favorite to top Group A on home soil. South Korea and Czechia will battle for 2nd, but Schick's return shifts the balance toward Czechia (34% to finish 2nd).
@@ -43,10 +43,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Switzerland** | 1900 / 1900 | 5.8 | 50% | 31% | 13% | 5% |
-| **Canada** | 1780 / 1880* | 5.3 | 38% | 37% | 18% | 7% |
-| **Bosnia & Herzegovina** | 1730 / 1730 | 2.7 | 7% | 16% | 36% | 41% |
-| **Qatar** | 1720 / 1720 | 2.6 | 6% | 16% | 33% | 46% |
+| **Switzerland** | 1900 / 1900 | 5.8 | 49% | 32% | 14% | 5% |
+| **Canada** | 1780 / 1880* | 5.3 | 38% | 36% | 18% | 8% |
+| **Bosnia & Herzegovina** | 1730 / 1730 | 2.8 | 7% | 17% | 35% | 41% |
+| **Qatar** | 1720 / 1720 | 2.6 | 6% | 15% | 33% | 46% |
 
 *\*Canada starts at 1880 Elo, subject to a -30 Elo penalty in matches where Davies (questionable) is stochastically simulated as out.*
 *   **Analysis:** Switzerland is expected to top the group, but Canada has a strong 75% chance of finishing in the top two. With Davies' return potential and clean host advantage, Canada represents a very secure qualifier.
@@ -73,10 +73,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **United States** | 1840 / 1980 | 6.8 | 73% | 18% | 7% | 2% |
-| **Türkiye** | 1810 / 1810 | 3.8 | 13% | 35% | 29% | 22% |
+| **United States** | 1840 / 1980 | 6.8 | 73% | 19% | 6% | 2% |
+| **Türkiye** | 1810 / 1810 | 3.8 | 14% | 35% | 29% | 22% |
 | **Australia** | 1770 / 1770 | 3.1 | 8% | 25% | 33% | 34% |
-| **Paraguay** | 1750 / 1750 | 2.8 | 6% | 22% | 31% | 42% |
+| **Paraguay** | 1750 / 1750 | 2.8 | 6% | 21% | 31% | 42% |
 
 *   **Analysis:** USMNT dominates Group D with a 73% chance of finishing 1st. Turkey is the favorite for 2nd, while Australia and Paraguay are left to fight for a potential third-place advancement slot.
 
@@ -87,8 +87,8 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Germany** | 1970 / 1935 | 6.5 | 59% | 28% | 12% | 1% |
-| **Ecuador** | 1850 / 1850 | 5.1 | 27% | 42% | 27% | 4% |
+| **Germany** | 1970 / 1935 | 6.5 | 59% | 28% | 11% | 1% |
+| **Ecuador** | 1850 / 1850 | 5.2 | 28% | 41% | 27% | 5% |
 | **Ivory Coast** | 1780 / 1780 | 4.0 | 13% | 28% | 48% | 11% |
 | **Curaçao** | 1560 / 1560 | 1.0 | 0% | 3% | 14% | 83% |
 
@@ -103,8 +103,8 @@ For key players with questionable fitness or returns, availability is simulated 
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Netherlands** | 1980 / 1885 | 5.4 | 45% | 28% | 18% | 9% |
 | **Sweden** | 1830 / 1830 | 4.3 | 25% | 29% | 27% | 19% |
-| **Japan** | 1880 / 1820 | 4.1 | 23% | 27% | 29% | 21% |
-| **Tunisia** | 1740 / 1740 | 2.6 | 7% | 15% | 27% | 51% |
+| **Japan** | 1880 / 1820 | 4.1 | 22% | 28% | 29% | 22% |
+| **Tunisia** | 1740 / 1740 | 2.6 | 8% | 15% | 27% | 51% |
 
 *   **Analysis:** The Netherlands' massive injury list (down to 1885 Elo) has severely eroded their dominance, dropping their group-win probability to 45%. Sweden (25% to win) and Japan (23% to win) are in a prime position to challenge the Dutch, making Group F a highly competitive three-way race.
 
@@ -115,9 +115,9 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Belgium** | 1960 / 1960 | 7.0 | 72% | 21% | 7% | 1% |
-| **Iran** | 1800 / 1800 | 4.6 | 17% | 43% | 33% | 8% |
-| **Egypt** | 1760 / 1760 | 3.9 | 11% | 32% | 44% | 14% |
+| **Belgium** | 1960 / 1960 | 7.0 | 72% | 21% | 6% | 1% |
+| **Iran** | 1800 / 1800 | 4.6 | 17% | 42% | 32% | 8% |
+| **Egypt** | 1760 / 1760 | 3.9 | 10% | 32% | 44% | 13% |
 | **New Zealand** | 1570 / 1570 | 1.2 | 1% | 5% | 17% | 78% |
 
 *   **Analysis:** Belgium has a 72% chance of topping the group. Iran's solid defensive block makes them a 43% favorite for 2nd, while Egypt represents a very strong candidate for a 3rd-place advancement slot.
@@ -130,9 +130,9 @@ For key players with questionable fitness or returns, availability is simulated 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Spain** | 2150 / 2150 | 7.5 | 75% | 23% | 2% | 0% |
-| **Uruguay** | 2000 / 2000 | 5.8 | 24% | 65% | 10% | 1% |
+| **Uruguay** | 2000 / 2000 | 5.8 | 24% | 66% | 9% | 1% |
 | **Saudi Arabia** | 1710 / 1710 | 2.3 | 1% | 8% | 57% | 34% |
-| **Cape Verde** | 1630 / 1630 | 1.4 | 0% | 3% | 32% | 64% |
+| **Cape Verde** | 1630 / 1630 | 1.3 | 0% | 3% | 32% | 65% |
 
 *   **Analysis:** Spain and Uruguay have a combined >98% chance of taking the top two spots. The only question is who wins the head-to-head for 1st (Spain favored at 75%).
 
@@ -143,10 +143,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **France** | 2110 / 2110 | 7.6 | 86% | 11% | 2% | 0% |
-| **Norway** | 1830 / 1830 | 3.8 | 7% | 41% | 36% | 17% |
-| **Senegal** | 1820 / 1820 | 3.7 | 6% | 38% | 38% | 18% |
-| **Iraq** | 1690 / 1690 | 1.6 | 1% | 10% | 24% | 65% |
+| **France** | 2110 / 2110 | 7.6 | 86% | 12% | 2% | 0% |
+| **Norway** | 1830 / 1830 | 3.8 | 7% | 41% | 35% | 17% |
+| **Senegal** | 1820 / 1820 | 3.6 | 6% | 37% | 38% | 19% |
+| **Iraq** | 1690 / 1690 | 1.7 | 1% | 10% | 25% | 64% |
 
 *   **Analysis:** France walks away with the group in 86% of runs. Norway (led by Haaland and Ødegaard) has a slight Elo edge over Senegal, translating into a 41% chance to finish 2nd. Senegal is highly likely to qualify as a 3rd-placed team.
 
@@ -157,10 +157,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Argentina** | 2130 / 2130 | 7.8 | 88% | 10% | 1% | 0% |
+| **Argentina** | 2130 / 2130 | 7.8 | 89% | 10% | 1% | 0% |
 | **Austria** | 1840 / 1840 | 4.3 | 8% | 53% | 27% | 11% |
-| **Algeria** | 1750 / 1750 | 2.8 | 2% | 24% | 42% | 31% |
-| **Jordan** | 1680 / 1680 | 1.8 | 1% | 12% | 30% | 57% |
+| **Algeria** | 1750 / 1750 | 2.9 | 2% | 25% | 42% | 31% |
+| **Jordan** | 1680 / 1680 | 1.8 | 1% | 12% | 29% | 58% |
 
 *   **Analysis:** Argentina is the safest bet in the tournament to top their group (88%). Austria is highly secure in 2nd (53%), leaving Algeria with a tough path to advance from 3rd.
 
@@ -171,10 +171,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Portugal** | 2030 / 2030 | 6.5 | 52% | 40% | 7% | 1% |
-| **Colombia** | 2010 / 2010 | 6.3 | 45% | 45% | 8% | 1% |
-| **Uzbekistan** | 1730 / 1730 | 2.1 | 1% | 8% | 45% | 45% |
-| **DR Congo** | 1710 / 1710 | 1.9 | 1% | 7% | 40% | 52% |
+| **Portugal** | 2030 / 2030 | 6.5 | 53% | 39% | 6% | 1% |
+| **Colombia** | 2010 / 2010 | 6.2 | 44% | 46% | 8% | 2% |
+| **Uzbekistan** | 1730 / 1730 | 2.1 | 2% | 8% | 46% | 44% |
+| **DR Congo** | 1710 / 1710 | 1.9 | 1% | 7% | 39% | 53% |
 
 *   **Analysis:** Portugal and Colombia will comfortably qualify. Their direct matchup will decide the group winner (Portugal 52%, Colombia 45%).
 
@@ -185,10 +185,10 @@ For key players with questionable fitness or returns, availability is simulated 
 
 | Team | Base / Adj. Elo | Avg. Pts | 1st | 2nd | 3rd | 4th |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **England** | 2050 / 2050* | 7.1 | 70% | 26% | 4% | 1% |
-| **Croatia** | 1930 / 1930 | 5.5 | 27% | 56% | 14% | 3% |
-| **Panama** | 1710 / 1710 | 2.3 | 2% | 11% | 47% | 41% |
-| **Ghana** | 1710 / 1710* | 1.8 | 1% | 8% | 36% | 55% |
+| **England** | 2050 / 2050* | 7.1 | 71% | 25% | 4% | 1% |
+| **Croatia** | 1930 / 1930 | 5.5 | 26% | 56% | 15% | 4% |
+| **Panama** | 1710 / 1710 | 2.3 | 2% | 11% | 45% | 42% |
+| **Ghana** | 1710 / 1710* | 1.9 | 1% | 9% | 36% | 54% |
 
 *\*England starts at 2050 Elo, subject to a -10 Elo penalty if Bukayo Saka is stochastically simulated as out. Ghana starts at 1710 Elo, subject to a -40 Elo penalty if Mohammed Kudus is out.*
 *   **Analysis:** England has deep offensive rotation to absorb Saka's minor fitness issue, topping the group in 70% of simulations. Croatia is highly secure in 2nd (56%). Modeling Kudus' injury stochastically (very low availability in Games 1 & 2) drops Ghana's average points to 1.8, making Panama the favorite to take 3rd.
@@ -199,7 +199,7 @@ For key players with questionable fitness or returns, availability is simulated 
 
 The transition from a flat scalar Elo model to the Dixon-Coles Bivariate Poisson model with stochastic rosters resulted in significant probability shifts:
 
-1.  **Neymar Availability Shifts Group C (+4% Brazil / -3% Morocco):** In the previous flat model (which assumed Neymar was out the entire group stage), Brazil and Morocco were locked at a 47% coin-flip. The new model simulates Neymar's recovery (available at 15% in game 1, rising to 50% and 75%). This raises Brazil's expected strength in later rounds, shifting their group-win probability up to **51%** (Morocco drops to **44%**).
-2.  **Davies Stochastic Availability Shifts Group B (+5% Canada / -4% Switzerland):** Canada's 1st place chance rose to **38%** (up from 33% in the old model) because Davies' questionable status is simulated as a distribution (raising Canada's Elo back to 1880 in later games when he plays) rather than a flat injury deduction.
-3.  **Netherlands Vulnerability Confirmed (Netherlands 45% / Sweden 25% / Japan 23%):** Incorporating Timber's groin injury alongside Simons' absence drops the Dutch group-win probability to **45%** (down from 49%). Sweden and Japan see a combined **+5%** boost to their group-winning expectations.
-4.  **Goal-Scoring Draw Decay:** Because the Dixon-Coles model simulates scores directly and corrects for draw inflation ($\rho = -0.08$), the average total points per group stage decreased by $0.2$ to $0.3$ points across all groups, reflecting more realistic tournament volatility.
+1.  **Neymar Availability Shifts Group C (+5% Brazil / -3% Morocco):** In the previous model where Neymar was assumed to be completely out (both teams at flat 1920 Elo), Brazil (46%) and Morocco (47%) were locked in a dead heat. The new model simulates Neymar's recovery curve (15% Game 1, 50% Game 2, 75% Game 3), raising Brazil's expected rating in later rounds. This shifts Brazil's group-win probability to **51%** while Morocco drops to **44%**.
+2.  **Davies Stochastic Recovery Boost (+9% Canada / -8% Switzerland):** In the previous model where Alphonso Davies was assumed to be completely out (flat 1850 Elo), Canada's group-win probability was **29%**. The new model simulates his round-specific recovery curve (40% Game 1, 75% Game 2, 90% Game 3), which raises Canada's expected rating to 1862/1873/1877 by round. This recovery, combined with the new engine's Goal Difference/Goals Scored tie-breaking, boosts Canada's group-win probability to **38%** (Switzerland drops from **57% to 49%**).
+3.  **Netherlands Vulnerability Confirmed (Netherlands 45% vs. Sweden 25% / Japan 22%):** Incorporating Jurrien Timber's groin injury (which reduces the Dutch baseline from 1920 to 1885 Elo) alongside Xavi Simons' and Matthijs de Ligt's absences has significantly eroded Netherlands' dominance. Their group-win probability drops from **57% to 45%** (-12pp) compared to the old model baseline (which omitted Timber's injury). Consequently, Sweden's chance rises from **21% to 25%** and Japan's from **16% to 22%**.
+4.  **Dixon-Coles Draw Correction:** Because the Dixon-Coles model corrects for the independent Poisson underestimation of low-scoring draws (using $\rho = -0.04$, which raises the equal-strength draw probability from the independent baseline of 27.0% to a more realistic 28.0%), the average total points per group stage decreased by **0.3 to 0.4 points** across all groups, reflecting more realistic tournament volatility and draw rates.
