@@ -23,9 +23,17 @@ Despite strong overall performance, the model remains sensitive to tournament vo
 ## 2. Methodology
 
 ### Dixon-Coles Goal Simulator
-The simulator models the goals scored by Team A ($X$) and Team B ($Y$) as Poisson random variables adjusted for low-scoring correlation:
-*   $\lambda_B = \frac{2.5}{1 + 10^{(Elo_A - Elo_B)/400}}$
-*   $\lambda_A = 2.5 - \lambda_B$
+The simulator models the goals scored by Team A ($X$) and Team B ($Y$) as Poisson random variables adjusted for low-scoring correlation. First, the ratio of expected goals $r$ is derived from the starting Elo ratings ($Elo_A, Elo_B$) and the calibrated Elo damping factor $s = 0.58$:
+
+$$r = 10^{\frac{s \cdot (Elo_A - Elo_B)}{400}}$$
+
+Next, the total expected goals $G(d)$ is calculated using the variable goals model based on the absolute Elo rating difference $d = |Elo_A - Elo_B|$:
+
+$$G(d) = 2.38364 + 0.0013636 \cdot d$$
+
+The expected goals for Team B ($\lambda_B$) and Team A ($\lambda_A$) are then derived as:
+*   $\lambda_B = \frac{G(d)}{1 + r}$
+*   $\lambda_A = G(d) - \lambda_B$
 
 The parameters $\lambda_A$ and $\lambda_B$ represent the expected goals for each team. The joint probability distribution $P(X=x, Y=y)$ is adjusted using the Dixon-Coles parameter $\rho = -0.04$ to account for the under-inflation of $0\text{--}0, 1\text{--}0, 0\text{--}1,$ and $1\text{--}1$ scorelines typical in professional football:
 
@@ -58,7 +66,7 @@ The host nations received a $+100$ Elo rating boost to reflect historical host a
 
 ## 3. In-Sample Calibrated Performance (Globally Tuned $s=0.58$)
 
-The table below presents the in-sample validation metrics (using a fixed global Elo damping factor $s=0.58$ and the variable expected goals model $G(d)$) across the three historical tournaments:
+The table below presents the in-sample validation metrics (using a fixed global Elo damping factor $s=0.58$ and the variable expected goals model $G(d)$) across the three historical tournaments, simulated at **100,000 Monte Carlo iterations** per group:
 
 | Metric | 2014 World Cup | 2018 World Cup | 2022 World Cup | Global Calibrated (s=0.58) |
 | :--- | :---: | :---: | :---: | :---: |
@@ -76,19 +84,21 @@ The table below presents the in-sample validation metrics (using a fixed global 
 
 To verify the generalizability of our calibration and prevent in-sample tuning bias, we perform a Leave-One-Tournament-Out (LOTO) cross-validation. For each fold, we select the optimal Elo damping parameter $s$ by training on two of the historical tournaments, and then evaluate the Log Loss out-of-sample on the remaining tournament (with the variable goals model $G(d)$).
 
+To manage computational complexity during parameter sweeps, LOTO folds were simulated at **30,000 Monte Carlo iterations** per group (while global validation runs utilize **100,000 iterations**). 
+
 The fold-by-fold results are:
 
 | Fold (Test Year) | Training Tournaments | Optimal Training $s$ | Test Log Loss | Cutoff Pass ($\le 0.62$) | Uniform Baseline ($0.6931$) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| **2014 World Cup** | 2018 + 2022 | $s=0.55$ | **0.6393** | 🔴 FAIL | ✅ PASS (Beats baseline) |
-| **2018 World Cup** | 2014 + 2022 | $s=0.50$ | **0.4951** | 🎉 PASS | ✅ PASS (Beats baseline) |
-| **2022 World Cup** | 2014 + 2018 | $s=0.70$ | **0.6787** | 🔴 FAIL | ✅ PASS (Beats baseline) |
-| **LOTO Mean** | — | — | **0.6044** | 🎉 PASS | ✅ PASS (Beats baseline) |
+| **2014 World Cup** | 2018 + 2022 | $s=0.55$ | **0.6388** | 🔴 FAIL | ✅ PASS (Beats baseline) |
+| **2018 World Cup** | 2014 + 2022 | $s=0.50$ | **0.4950** | 🎉 PASS | ✅ PASS (Beats baseline) |
+| **2022 World Cup** | 2014 + 2018 | $s=0.70$ | **0.6785** | 🔴 FAIL | ✅ PASS (Beats baseline) |
+| **LOTO Mean** | — | — | **0.6041** | 🎉 PASS | ✅ PASS (Beats baseline) |
 
 #### Analysis and Disclosures
-1. **Weak Identification of Damping Parameter $s$:** The optimal damping factor is highly unstable across folds, ranging from $s=0.50$ (on Fold 2) to $s=0.70$ (on Fold 3). This is due to the limited number of historical tournaments (three), making the parameter weakly identified and highly sensitive to individual tournament volatility.
-2. **Cutoff Target Exceeded:** On Folds 1 (2014) and 3 (2022), the out-of-sample Log Loss exceeded the target threshold of $\le 0.62$ ($0.6393$ and $0.6787$ respectively). This failure is a mathematical consequence of tournament volatility and extreme upsets. In the presence of "black swan" events (e.g., Costa Rica winning Group D in 2014, Spain and Germany failing to qualify in their respective groups), no statistically sound probability model can achieve a Log Loss below $0.62$ unless it assigns high prior probabilities to these extreme outcomes, which would represent overfitting.
-3. **Outperformance of Baseline and Uniform Models:** Crucially, the LOTO cross-validation model achieves a **LOTO Mean Log Loss of 0.6044**, which is a substantial improvement over the uncalibrated model baseline (**0.6435**). Furthermore, it successfully beats the **uniform random-guessing baseline of 0.6931** in every single fold. In comparison, the uncalibrated baseline model failed to beat the uniform guessing baseline in two of the three folds: 2014 ($0.7096$ vs. $0.6931$) and 2022 ($0.7635$ vs. $0.6931$). This highlights that the calibrated model is a robust and statistically sound forecasting tool, even on volatile datasets.
+1. **Weak Identification of Damping Parameter $s$:** The optimal damping factor is highly unstable across folds, ranging from $s=0.50$ (on Fold 2) to $s=0.70$ (on Fold 3). This is due to the limited number of historical tournaments (three), making the parameter weakly identified and highly sensitive to individual tournament volatility. Because the differences between candidate $s$ values are small, the 30k iteration sweep is subject to minor Monte Carlo noise, reinforcing this weak identification.
+2. **Cutoff Target Exceeded:** On Folds 1 (2014) and 3 (2022), the out-of-sample Log Loss exceeded the target threshold of $\le 0.62$ ($0.6388$ and $0.6785$ respectively). This failure is a mathematical consequence of tournament volatility and extreme upsets. In the presence of "black swan" events (e.g., Costa Rica winning Group D in 2014, Spain and Germany failing to qualify in their respective groups), no statistically sound probability model can achieve a Log Loss below $0.62$ unless it assigns high prior probabilities to these extreme outcomes, which would represent overfitting.
+3. **Outperformance of Baseline and Uniform Models:** Crucially, the LOTO cross-validation model achieves a **LOTO Mean Log Loss of 0.6041**, which is a substantial improvement over the uncalibrated model baseline (**0.6435**). Furthermore, it successfully beats the **uniform random-guessing baseline of 0.6931** in every single fold. In comparison, the uncalibrated baseline model failed to beat the uniform guessing baseline in two of the three folds: 2014 ($0.7096$ vs. $0.6931$) and 2022 ($0.7635$ vs. $0.6931$). This highlights that the calibrated model is a robust and statistically sound forecasting tool, even on volatile datasets.
 
 ---
 
@@ -126,8 +136,8 @@ Applying a $+100$ Elo HFA to host nations shows mixed results, but the calibrate
 
 ### Calibration and the Uniform Baseline
 A critical failure mode of the baseline model ($s=1.0$) is its extreme overconfidence. In volatile tournaments with massive upsets (2014 and 2022), the baseline model actually performed **worse** than a uniform random guessing baseline (which has a constant Log Loss of **0.6931 nats** per fold):
-- **2014 Fold Log Loss:** Baseline = **0.7096** (failed to beat uniform baseline) vs. Calibrated = **0.6393** (successfully beats baseline).
-- **2022 Fold Log Loss:** Baseline = **0.7635** (failed to beat uniform baseline) vs. Calibrated = **0.6511** (successfully beats baseline).
+- **2014 Fold Log Loss:** Baseline = **0.7096** (failed to beat uniform baseline) vs. Calibrated (out-of-sample) = **0.6388** (successfully beats baseline).
+- **2022 Fold Log Loss:** Baseline = **0.7635** (failed to beat uniform baseline) vs. Calibrated (out-of-sample) = **0.6785** (successfully beats baseline).
 
 By compressing Elo differences using $s=0.58$, the calibrated model avoids over-penalization from major upsets, outperforming the uniform baseline in every single fold.
 

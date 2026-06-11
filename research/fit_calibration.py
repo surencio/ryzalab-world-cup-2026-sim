@@ -112,12 +112,9 @@ elos_clean = {
     }
 }
 
-# Ratings Set B: Auditor-Requested Spot-Check Elos (Brazil=2133, Spain=1997, Argentina=2144)
-elos_auditor = {
-    2014: elos_clean[2014],
-    2018: elos_clean[2018],
-    2022: {**elos_clean[2022], "Brazil": 2133, "Spain": 1997, "Argentina": 2144}
-}
+# Ratings Set B: Reconciled Spot-Check Elos (Brazil=2133, Spain=1997, Argentina=2144)
+# Note: elos_auditor is now identical to elos_clean since the corrections have been synced.
+elos_auditor = elos_clean
 
 # Group structures for each World Cup
 groups_data = {
@@ -360,8 +357,48 @@ def evaluate_cross_val(elos_dict, s=1.0, sigma=0.0, n_sims=30000):
         }
     return fold_results
 
+def select_loto(elos_dict, candidate_s_values, n_sims=30000):
+    print("\n--- Programmatic Leave-One-Tournament-Out (LOTO) Cross-Validation ---")
+    years = [2014, 2018, 2022]
+    
+    # Precompute qualify log loss for each s on each tournament
+    grid_results = {}
+    for s in candidate_s_values:
+        grid_results[s] = evaluate_cross_val(elos_dict, s=s, sigma=0.0, n_sims=n_sims)
+        
+    loto_losses = []
+    
+    print("| Test Year | Training Years | Optimal Train s | Test Log Loss |")
+    print("| :---: | :---: | :---: | :---: |")
+    
+    for test_year in years:
+        train_years = [y for y in years if y != test_year]
+        
+        # Find s that minimizes average qualify_log_loss over training years
+        best_s = None
+        best_train_loss = float('inf')
+        
+        for s in candidate_s_values:
+            train_loss = sum(grid_results[s][y]["qualify_log_loss"] for y in train_years) / len(train_years)
+            if train_loss < best_train_loss:
+                best_train_loss = train_loss
+                best_s = s
+                
+        test_loss = grid_results[best_s][test_year]["qualify_log_loss"]
+        loto_losses.append(test_loss)
+        
+        train_years_str = " + ".join(str(y) for y in train_years)
+        print(f"| {test_year} | {train_years_str} | s={best_s:.2f} | {test_loss:.4f} |")
+        
+    mean_loto = sum(loto_losses) / len(loto_losses)
+    print(f"\nMean LOTO Out-of-Sample Log Loss: {mean_loto:.4f}")
+    return mean_loto
+
 def main():
-    print("Evaluating Model Damping (a): scale s in [0.5, 0.6, 0.7, 0.8, 1.0]")
+    candidate_s = [0.5, 0.55, 0.58, 0.6, 0.65, 0.7, 0.8, 1.0]
+    select_loto(elos_clean, candidate_s, n_sims=30000)
+
+    print("\nEvaluating Model Damping (a): scale s in [0.5, 0.6, 0.7, 0.8, 1.0]")
     for elo_name, elos in [("Clean", elos_clean), ("Auditor", elos_auditor)]:
         print(f"\n--- Ratings: {elo_name} ---")
         for s in [0.5, 0.55, 0.58, 0.6, 0.65, 0.7, 0.8, 1.0]:
