@@ -1,0 +1,1118 @@
+{
+  "metrics": {
+    "global_qualify_brier": 0.21578781655416665,
+    "global_qualify_log_loss": 0.6317590289579672,
+    "global_first_brier": 0.12259698374375,
+    "global_first_log_loss": 0.4124162962531916,
+    "global_accuracy_threshold_50": 0.6770833333333334,
+    "global_top2_match_rate": 0.7083333333333334,
+    "total_predicted_qualifiers_correct": 34,
+    "total_qualifiers": 48,
+    "yearly_breakdown": {
+      "2014": {
+        "qualify_brier": 0.24514498259374998,
+        "qualify_log_loss": 0.6993210353776291,
+        "first_brier": 0.11616018063750003,
+        "first_log_loss": 0.40306182470188506,
+        "accuracy_qualifiers_threshold_50": 0.59375,
+        "correct_qualifiers_top2_predicted": 10
+      },
+      "2018": {
+        "qualify_brier": 0.13581487020625,
+        "qualify_log_loss": 0.451870260084457,
+        "first_brier": 0.131353258925,
+        "first_log_loss": 0.40864500923586555,
+        "accuracy_qualifiers_threshold_50": 0.8125,
+        "correct_qualifiers_top2_predicted": 13
+      },
+      "2022": {
+        "qualify_brier": 0.2664035968625,
+        "qualify_log_loss": 0.7440857914118156,
+        "first_brier": 0.12027751166874999,
+        "first_log_loss": 0.4255420548218242,
+        "accuracy_qualifiers_threshold_50": 0.625,
+        "correct_qualifiers_top2_predicted": 11
+      }
+    }
+  },
+  "simulations": {
+    "2014": {
+      "Group A": {
+        "Brazil": {
+          "avg_points": 8.14999,
+          "1st": 0.92921,
+          "2nd": 0.06345,
+          "3rd": 0.00687,
+          "4th": 0.00047,
+          "qualify": 0.99266
+        },
+        "Croatia": {
+          "avg_points": 3.8669,
+          "1st": 0.03541,
+          "2nd": 0.4532,
+          "3rd": 0.39703,
+          "4th": 0.11436,
+          "qualify": 0.48861
+        },
+        "Mexico": {
+          "avg_points": 3.8176,
+          "1st": 0.03406,
+          "2nd": 0.43251,
+          "3rd": 0.414,
+          "4th": 0.11943,
+          "qualify": 0.46657
+        },
+        "Cameroon": {
+          "avg_points": 1.11381,
+          "1st": 0.00132,
+          "2nd": 0.05084,
+          "3rd": 0.1821,
+          "4th": 0.76574,
+          "qualify": 0.05216
+        }
+      },
+      "Group B": {
+        "Spain": {
+          "avg_points": 6.82718,
+          "1st": 0.66621,
+          "2nd": 0.24254,
+          "3rd": 0.08225,
+          "4th": 0.009,
+          "qualify": 0.90875
+        },
+        "Netherlands": {
+          "avg_points": 4.94002,
+          "1st": 0.22327,
+          "2nd": 0.4341,
+          "3rd": 0.28905,
+          "4th": 0.05358,
+          "qualify": 0.65737
+        },
+        "Chile": {
+          "avg_points": 3.90106,
+          "1st": 0.10623,
+          "2nd": 0.29151,
+          "3rd": 0.48132,
+          "4th": 0.12094,
+          "qualify": 0.39774
+        },
+        "Australia": {
+          "avg_points": 1.06763,
+          "1st": 0.00429,
+          "2nd": 0.03185,
+          "3rd": 0.14738,
+          "4th": 0.81648,
+          "qualify": 0.03614
+        }
+      },
+      "Group C": {
+        "Colombia": {
+          "avg_points": 5.96116,
+          "1st": 0.56935,
+          "2nd": 0.25114,
+          "3rd": 0.12314,
+          "4th": 0.05637,
+          "qualify": 0.82049
+        },
+        "Greece": {
+          "avg_points": 4.05851,
+          "1st": 0.20327,
+          "2nd": 0.30599,
+          "3rd": 0.27276,
+          "4th": 0.21798,
+          "qualify": 0.50926
+        },
+        "Ivory Coast": {
+          "avg_points": 3.07302,
+          "1st": 0.1037,
+          "2nd": 0.20784,
+          "3rd": 0.29682,
+          "4th": 0.39164,
+          "qualify": 0.31154
+        },
+        "Japan": {
+          "avg_points": 3.33456,
+          "1st": 0.12368,
+          "2nd": 0.23503,
+          "3rd": 0.30728,
+          "4th": 0.33401,
+          "qualify": 0.35871
+        }
+      },
+      "Group D": {
+        "Uruguay": {
+          "avg_points": 5.09177,
+          "1st": 0.34241,
+          "2nd": 0.31988,
+          "3rd": 0.25668,
+          "4th": 0.08103,
+          "qualify": 0.66229
+        },
+        "Costa Rica": {
+          "avg_points": 1.58856,
+          "1st": 0.02041,
+          "2nd": 0.06342,
+          "3rd": 0.18556,
+          "4th": 0.73061,
+          "qualify": 0.08383
+        },
+        "England": {
+          "avg_points": 5.32731,
+          "1st": 0.39335,
+          "2nd": 0.31546,
+          "3rd": 0.22383,
+          "4th": 0.06736,
+          "qualify": 0.70881
+        },
+        "Italy": {
+          "avg_points": 4.52104,
+          "1st": 0.24383,
+          "2nd": 0.30124,
+          "3rd": 0.33393,
+          "4th": 0.121,
+          "qualify": 0.54507
+        }
+      },
+      "Group E": {
+        "Switzerland": {
+          "avg_points": 4.80754,
+          "1st": 0.29074,
+          "2nd": 0.32321,
+          "3rd": 0.28418,
+          "4th": 0.10187,
+          "qualify": 0.61395
+        },
+        "Ecuador": {
+          "avg_points": 4.46327,
+          "1st": 0.23242,
+          "2nd": 0.30587,
+          "3rd": 0.33219,
+          "4th": 0.12952,
+          "qualify": 0.53829
+        },
+        "France": {
+          "avg_points": 5.60099,
+          "1st": 0.45478,
+          "2nd": 0.30106,
+          "3rd": 0.18917,
+          "4th": 0.05499,
+          "qualify": 0.75584
+        },
+        "Honduras": {
+          "avg_points": 1.65047,
+          "1st": 0.02206,
+          "2nd": 0.06986,
+          "3rd": 0.19446,
+          "4th": 0.71362,
+          "qualify": 0.09192
+        }
+      },
+      "Group F": {
+        "Argentina": {
+          "avg_points": 7.36301,
+          "1st": 0.82291,
+          "2nd": 0.13791,
+          "3rd": 0.0317,
+          "4th": 0.00748,
+          "qualify": 0.96082
+        },
+        "Bosnia and Herzegovina": {
+          "avg_points": 3.82033,
+          "1st": 0.09768,
+          "2nd": 0.40617,
+          "3rd": 0.29745,
+          "4th": 0.1987,
+          "qualify": 0.50385
+        },
+        "Iran": {
+          "avg_points": 2.62505,
+          "1st": 0.03591,
+          "2nd": 0.21244,
+          "3rd": 0.32743,
+          "4th": 0.42422,
+          "qualify": 0.24835
+        },
+        "Nigeria": {
+          "avg_points": 2.83061,
+          "1st": 0.0435,
+          "2nd": 0.24348,
+          "3rd": 0.34342,
+          "4th": 0.3696,
+          "qualify": 0.28698
+        }
+      },
+      "Group G": {
+        "Germany": {
+          "avg_points": 6.9297,
+          "1st": 0.69553,
+          "2nd": 0.22881,
+          "3rd": 0.06619,
+          "4th": 0.00947,
+          "qualify": 0.92434
+        },
+        "Portugal": {
+          "avg_points": 4.92357,
+          "1st": 0.21889,
+          "2nd": 0.46173,
+          "3rd": 0.25517,
+          "4th": 0.06421,
+          "qualify": 0.68062
+        },
+        "Ghana": {
+          "avg_points": 1.33969,
+          "1st": 0.00699,
+          "2nd": 0.04964,
+          "3rd": 0.20075,
+          "4th": 0.74262,
+          "qualify": 0.05663
+        },
+        "United States": {
+          "avg_points": 3.51755,
+          "1st": 0.07859,
+          "2nd": 0.25982,
+          "3rd": 0.47789,
+          "4th": 0.1837,
+          "qualify": 0.33841
+        }
+      },
+      "Group H": {
+        "Belgium": {
+          "avg_points": 5.9315,
+          "1st": 0.47346,
+          "2nd": 0.36438,
+          "3rd": 0.12496,
+          "4th": 0.0372,
+          "qualify": 0.83784
+        },
+        "Algeria": {
+          "avg_points": 2.06854,
+          "1st": 0.02749,
+          "2nd": 0.09864,
+          "3rd": 0.32073,
+          "4th": 0.55314,
+          "qualify": 0.12613
+        },
+        "Russia": {
+          "avg_points": 5.85556,
+          "1st": 0.44657,
+          "2nd": 0.38031,
+          "3rd": 0.13337,
+          "4th": 0.03975,
+          "qualify": 0.82688
+        },
+        "South Korea": {
+          "avg_points": 2.73771,
+          "1st": 0.05248,
+          "2nd": 0.15667,
+          "3rd": 0.42094,
+          "4th": 0.36991,
+          "qualify": 0.20915
+        }
+      }
+    },
+    "2018": {
+      "Group A": {
+        "Russia": {
+          "avg_points": 5.02175,
+          "1st": 0.24536,
+          "2nd": 0.47768,
+          "3rd": 0.20415,
+          "4th": 0.07281,
+          "qualify": 0.72304
+        },
+        "Saudi Arabia": {
+          "avg_points": 1.96897,
+          "1st": 0.02003,
+          "2nd": 0.1016,
+          "3rd": 0.30528,
+          "4th": 0.57309,
+          "qualify": 0.12163
+        },
+        "Egypt": {
+          "avg_points": 2.81284,
+          "1st": 0.04716,
+          "2nd": 0.18125,
+          "3rd": 0.43,
+          "4th": 0.34159,
+          "qualify": 0.22841
+        },
+        "Uruguay": {
+          "avg_points": 6.84727,
+          "1st": 0.68745,
+          "2nd": 0.23947,
+          "3rd": 0.06057,
+          "4th": 0.01251,
+          "qualify": 0.92692
+        }
+      },
+      "Group B": {
+        "Portugal": {
+          "avg_points": 5.55732,
+          "1st": 0.32799,
+          "2nd": 0.48105,
+          "3rd": 0.14942,
+          "4th": 0.04154,
+          "qualify": 0.80904
+        },
+        "Spain": {
+          "avg_points": 6.67807,
+          "1st": 0.62076,
+          "2nd": 0.29646,
+          "3rd": 0.06942,
+          "4th": 0.01336,
+          "qualify": 0.91722
+        },
+        "Morocco": {
+          "avg_points": 1.82492,
+          "1st": 0.01504,
+          "2nd": 0.07802,
+          "3rd": 0.31726,
+          "4th": 0.58968,
+          "qualify": 0.09306
+        },
+        "Iran": {
+          "avg_points": 2.63097,
+          "1st": 0.03621,
+          "2nd": 0.14447,
+          "3rd": 0.4639,
+          "4th": 0.35542,
+          "qualify": 0.18068
+        }
+      },
+      "Group C": {
+        "France": {
+          "avg_points": 6.1067,
+          "1st": 0.55869,
+          "2nd": 0.27744,
+          "3rd": 0.12811,
+          "4th": 0.03576,
+          "qualify": 0.83613
+        },
+        "Australia": {
+          "avg_points": 1.85746,
+          "1st": 0.02624,
+          "2nd": 0.08996,
+          "3rd": 0.23461,
+          "4th": 0.64919,
+          "qualify": 0.1162
+        },
+        "Peru": {
+          "avg_points": 4.8308,
+          "1st": 0.27835,
+          "2nd": 0.36652,
+          "3rd": 0.25331,
+          "4th": 0.10182,
+          "qualify": 0.64487
+        },
+        "Denmark": {
+          "avg_points": 3.73973,
+          "1st": 0.13672,
+          "2nd": 0.26608,
+          "3rd": 0.38397,
+          "4th": 0.21323,
+          "qualify": 0.4028
+        }
+      },
+      "Group D": {
+        "Argentina": {
+          "avg_points": 6.84802,
+          "1st": 0.70302,
+          "2nd": 0.21849,
+          "3rd": 0.06435,
+          "4th": 0.01414,
+          "qualify": 0.92151
+        },
+        "Iceland": {
+          "avg_points": 3.16972,
+          "1st": 0.06866,
+          "2nd": 0.23277,
+          "3rd": 0.41878,
+          "4th": 0.27979,
+          "qualify": 0.30143
+        },
+        "Croatia": {
+          "avg_points": 4.72663,
+          "1st": 0.20882,
+          "2nd": 0.45068,
+          "3rd": 0.24406,
+          "4th": 0.09644,
+          "qualify": 0.6595
+        },
+        "Nigeria": {
+          "avg_points": 1.88169,
+          "1st": 0.0195,
+          "2nd": 0.09806,
+          "3rd": 0.27281,
+          "4th": 0.60963,
+          "qualify": 0.11756
+        }
+      },
+      "Group E": {
+        "Brazil": {
+          "avg_points": 7.68506,
+          "1st": 0.85922,
+          "2nd": 0.11948,
+          "3rd": 0.01854,
+          "4th": 0.00276,
+          "qualify": 0.9787
+        },
+        "Switzerland": {
+          "avg_points": 4.38303,
+          "1st": 0.10475,
+          "2nd": 0.53349,
+          "3rd": 0.25191,
+          "4th": 0.10985,
+          "qualify": 0.63824
+        },
+        "Costa Rica": {
+          "avg_points": 2.10302,
+          "1st": 0.01365,
+          "2nd": 0.1438,
+          "3rd": 0.32948,
+          "4th": 0.51307,
+          "qualify": 0.15745
+        },
+        "Serbia": {
+          "avg_points": 2.59054,
+          "1st": 0.02238,
+          "2nd": 0.20323,
+          "3rd": 0.40007,
+          "4th": 0.37432,
+          "qualify": 0.22561
+        }
+      },
+      "Group F": {
+        "Germany": {
+          "avg_points": 7.42749,
+          "1st": 0.82358,
+          "2nd": 0.14015,
+          "3rd": 0.03066,
+          "4th": 0.00561,
+          "qualify": 0.96373
+        },
+        "Mexico": {
+          "avg_points": 4.11782,
+          "1st": 0.10787,
+          "2nd": 0.45086,
+          "3rd": 0.29794,
+          "4th": 0.14333,
+          "qualify": 0.55873
+        },
+        "Sweden": {
+          "avg_points": 3.20469,
+          "1st": 0.05399,
+          "2nd": 0.28305,
+          "3rd": 0.39338,
+          "4th": 0.26958,
+          "qualify": 0.33704
+        },
+        "South Korea": {
+          "avg_points": 1.94302,
+          "1st": 0.01456,
+          "2nd": 0.12594,
+          "3rd": 0.27802,
+          "4th": 0.58148,
+          "qualify": 0.1405
+        }
+      },
+      "Group G": {
+        "Belgium": {
+          "avg_points": 6.2648,
+          "1st": 0.46287,
+          "2nd": 0.43675,
+          "3rd": 0.08385,
+          "4th": 0.01653,
+          "qualify": 0.89962
+        },
+        "Panama": {
+          "avg_points": 2.06316,
+          "1st": 0.01544,
+          "2nd": 0.08153,
+          "3rd": 0.42746,
+          "4th": 0.47557,
+          "qualify": 0.09697
+        },
+        "Tunisia": {
+          "avg_points": 2.03143,
+          "1st": 0.01479,
+          "2nd": 0.07799,
+          "3rd": 0.41301,
+          "4th": 0.49421,
+          "qualify": 0.09278
+        },
+        "England": {
+          "avg_points": 6.38225,
+          "1st": 0.5069,
+          "2nd": 0.40373,
+          "3rd": 0.07568,
+          "4th": 0.01369,
+          "qualify": 0.91063
+        }
+      },
+      "Group H": {
+        "Poland": {
+          "avg_points": 4.72376,
+          "1st": 0.24799,
+          "2nd": 0.39761,
+          "3rd": 0.24028,
+          "4th": 0.11412,
+          "qualify": 0.6456
+        },
+        "Senegal": {
+          "avg_points": 3.2498,
+          "1st": 0.09129,
+          "2nd": 0.22951,
+          "3rd": 0.38325,
+          "4th": 0.29595,
+          "qualify": 0.3208
+        },
+        "Colombia": {
+          "avg_points": 6.42218,
+          "1st": 0.62653,
+          "2nd": 0.25102,
+          "3rd": 0.09432,
+          "4th": 0.02813,
+          "qualify": 0.87755
+        },
+        "Japan": {
+          "avg_points": 2.15524,
+          "1st": 0.03419,
+          "2nd": 0.12186,
+          "3rd": 0.28215,
+          "4th": 0.5618,
+          "qualify": 0.15605
+        }
+      }
+    },
+    "2022": {
+      "Group A": {
+        "Qatar": {
+          "avg_points": 3.31134,
+          "1st": 0.06287,
+          "2nd": 0.28726,
+          "3rd": 0.40083,
+          "4th": 0.24904,
+          "qualify": 0.35013
+        },
+        "Ecuador": {
+          "avg_points": 4.19405,
+          "1st": 0.12232,
+          "2nd": 0.44611,
+          "3rd": 0.29574,
+          "4th": 0.13583,
+          "qualify": 0.56843
+        },
+        "Senegal": {
+          "avg_points": 1.86406,
+          "1st": 0.01487,
+          "2nd": 0.11138,
+          "3rd": 0.26551,
+          "4th": 0.60824,
+          "qualify": 0.12625
+        },
+        "Netherlands": {
+          "avg_points": 7.30576,
+          "1st": 0.79994,
+          "2nd": 0.15525,
+          "3rd": 0.03792,
+          "4th": 0.00689,
+          "qualify": 0.95519
+        }
+      },
+      "Group B": {
+        "England": {
+          "avg_points": 5.90993,
+          "1st": 0.56795,
+          "2nd": 0.24432,
+          "3rd": 0.12572,
+          "4th": 0.06201,
+          "qualify": 0.81227
+        },
+        "Iran": {
+          "avg_points": 3.53542,
+          "1st": 0.1482,
+          "2nd": 0.25584,
+          "3rd": 0.28996,
+          "4th": 0.306,
+          "qualify": 0.40404
+        },
+        "United States": {
+          "avg_points": 3.56487,
+          "1st": 0.15028,
+          "2nd": 0.26053,
+          "3rd": 0.29126,
+          "4th": 0.29793,
+          "qualify": 0.41081
+        },
+        "Wales": {
+          "avg_points": 3.39809,
+          "1st": 0.13357,
+          "2nd": 0.23931,
+          "3rd": 0.29306,
+          "4th": 0.33406,
+          "qualify": 0.37288
+        }
+      },
+      "Group C": {
+        "Argentina": {
+          "avg_points": 7.87505,
+          "1st": 0.89014,
+          "2nd": 0.09393,
+          "3rd": 0.01455,
+          "4th": 0.00138,
+          "qualify": 0.98407
+        },
+        "Saudi Arabia": {
+          "avg_points": 1.33771,
+          "1st": 0.00371,
+          "2nd": 0.0677,
+          "3rd": 0.2081,
+          "4th": 0.72049,
+          "qualify": 0.07141
+        },
+        "Mexico": {
+          "avg_points": 3.77771,
+          "1st": 0.05117,
+          "2nd": 0.40783,
+          "3rd": 0.39723,
+          "4th": 0.14377,
+          "qualify": 0.459
+        },
+        "Poland": {
+          "avg_points": 3.85852,
+          "1st": 0.05498,
+          "2nd": 0.43054,
+          "3rd": 0.38012,
+          "4th": 0.13436,
+          "qualify": 0.48552
+        }
+      },
+      "Group D": {
+        "France": {
+          "avg_points": 6.53088,
+          "1st": 0.55426,
+          "2nd": 0.36326,
+          "3rd": 0.06932,
+          "4th": 0.01316,
+          "qualify": 0.91752
+        },
+        "Australia": {
+          "avg_points": 2.17443,
+          "1st": 0.01939,
+          "2nd": 0.09314,
+          "3rd": 0.43777,
+          "4th": 0.4497,
+          "qualify": 0.11253
+        },
+        "Denmark": {
+          "avg_points": 6.02683,
+          "1st": 0.41142,
+          "2nd": 0.46346,
+          "3rd": 0.10237,
+          "4th": 0.02275,
+          "qualify": 0.87488
+        },
+        "Tunisia": {
+          "avg_points": 1.99379,
+          "1st": 0.01493,
+          "2nd": 0.08014,
+          "3rd": 0.39054,
+          "4th": 0.51439,
+          "qualify": 0.09507
+        }
+      },
+      "Group E": {
+        "Spain": {
+          "avg_points": 6.73519,
+          "1st": 0.64034,
+          "2nd": 0.28181,
+          "3rd": 0.06472,
+          "4th": 0.01313,
+          "qualify": 0.92215
+        },
+        "Costa Rica": {
+          "avg_points": 1.93195,
+          "1st": 0.01762,
+          "2nd": 0.08783,
+          "3rd": 0.33193,
+          "4th": 0.56262,
+          "qualify": 0.10545
+        },
+        "Germany": {
+          "avg_points": 5.44006,
+          "1st": 0.30699,
+          "2nd": 0.48631,
+          "3rd": 0.15987,
+          "4th": 0.04683,
+          "qualify": 0.7933
+        },
+        "Japan": {
+          "avg_points": 2.5741,
+          "1st": 0.03505,
+          "2nd": 0.14405,
+          "3rd": 0.44348,
+          "4th": 0.37742,
+          "qualify": 0.1791
+        }
+      },
+      "Group F": {
+        "Belgium": {
+          "avg_points": 6.48498,
+          "1st": 0.61747,
+          "2nd": 0.27666,
+          "3rd": 0.08358,
+          "4th": 0.02229,
+          "qualify": 0.89413
+        },
+        "Canada": {
+          "avg_points": 2.55127,
+          "1st": 0.04475,
+          "2nd": 0.15118,
+          "3rd": 0.37787,
+          "4th": 0.4262,
+          "qualify": 0.19593
+        },
+        "Morocco": {
+          "avg_points": 2.37747,
+          "1st": 0.0368,
+          "2nd": 0.13369,
+          "3rd": 0.3513,
+          "4th": 0.47821,
+          "qualify": 0.17049
+        },
+        "Croatia": {
+          "avg_points": 5.1792,
+          "1st": 0.30098,
+          "2nd": 0.43847,
+          "3rd": 0.18725,
+          "4th": 0.0733,
+          "qualify": 0.73945
+        }
+      },
+      "Group G": {
+        "Brazil": {
+          "avg_points": 7.66406,
+          "1st": 0.83188,
+          "2nd": 0.13817,
+          "3rd": 0.0285,
+          "4th": 0.00145,
+          "qualify": 0.97005
+        },
+        "Serbia": {
+          "avg_points": 4.1946,
+          "1st": 0.0812,
+          "2nd": 0.41165,
+          "3rd": 0.43681,
+          "4th": 0.07034,
+          "qualify": 0.49285
+        },
+        "Switzerland": {
+          "avg_points": 4.25216,
+          "1st": 0.0857,
+          "2nd": 0.42902,
+          "3rd": 0.41776,
+          "4th": 0.06752,
+          "qualify": 0.51472
+        },
+        "Cameroon": {
+          "avg_points": 0.80475,
+          "1st": 0.00122,
+          "2nd": 0.02116,
+          "3rd": 0.11693,
+          "4th": 0.86069,
+          "qualify": 0.02238
+        }
+      },
+      "Group H": {
+        "Portugal": {
+          "avg_points": 6.71883,
+          "1st": 0.60103,
+          "2nd": 0.3073,
+          "3rd": 0.08504,
+          "4th": 0.00663,
+          "qualify": 0.90833
+        },
+        "Ghana": {
+          "avg_points": 0.89498,
+          "1st": 0.0019,
+          "2nd": 0.01854,
+          "3rd": 0.14019,
+          "4th": 0.83937,
+          "qualify": 0.02044
+        },
+        "Uruguay": {
+          "avg_points": 5.71587,
+          "1st": 0.33426,
+          "2nd": 0.46756,
+          "3rd": 0.17805,
+          "4th": 0.02013,
+          "qualify": 0.80182
+        },
+        "South Korea": {
+          "avg_points": 3.48574,
+          "1st": 0.06281,
+          "2nd": 0.2066,
+          "3rd": 0.59672,
+          "4th": 0.13387,
+          "qualify": 0.26941
+        }
+      }
+    }
+  },
+  "actuals": {
+    "2014": {
+      "Group A": [
+        "Brazil",
+        "Mexico",
+        "Croatia",
+        "Cameroon"
+      ],
+      "Group B": [
+        "Netherlands",
+        "Chile",
+        "Spain",
+        "Australia"
+      ],
+      "Group C": [
+        "Colombia",
+        "Greece",
+        "Ivory Coast",
+        "Japan"
+      ],
+      "Group D": [
+        "Costa Rica",
+        "Uruguay",
+        "Italy",
+        "England"
+      ],
+      "Group E": [
+        "France",
+        "Switzerland",
+        "Ecuador",
+        "Honduras"
+      ],
+      "Group F": [
+        "Argentina",
+        "Nigeria",
+        "Bosnia and Herzegovina",
+        "Iran"
+      ],
+      "Group G": [
+        "Germany",
+        "United States",
+        "Portugal",
+        "Ghana"
+      ],
+      "Group H": [
+        "Belgium",
+        "Algeria",
+        "Russia",
+        "South Korea"
+      ]
+    },
+    "2018": {
+      "Group A": [
+        "Uruguay",
+        "Russia",
+        "Saudi Arabia",
+        "Egypt"
+      ],
+      "Group B": [
+        "Spain",
+        "Portugal",
+        "Iran",
+        "Morocco"
+      ],
+      "Group C": [
+        "France",
+        "Denmark",
+        "Peru",
+        "Australia"
+      ],
+      "Group D": [
+        "Croatia",
+        "Argentina",
+        "Nigeria",
+        "Iceland"
+      ],
+      "Group E": [
+        "Brazil",
+        "Switzerland",
+        "Serbia",
+        "Costa Rica"
+      ],
+      "Group F": [
+        "Sweden",
+        "Mexico",
+        "South Korea",
+        "Germany"
+      ],
+      "Group G": [
+        "Belgium",
+        "England",
+        "Tunisia",
+        "Panama"
+      ],
+      "Group H": [
+        "Colombia",
+        "Japan",
+        "Senegal",
+        "Poland"
+      ]
+    },
+    "2022": {
+      "Group A": [
+        "Netherlands",
+        "Senegal",
+        "Ecuador",
+        "Qatar"
+      ],
+      "Group B": [
+        "England",
+        "United States",
+        "Iran",
+        "Wales"
+      ],
+      "Group C": [
+        "Argentina",
+        "Poland",
+        "Mexico",
+        "Saudi Arabia"
+      ],
+      "Group D": [
+        "France",
+        "Australia",
+        "Tunisia",
+        "Denmark"
+      ],
+      "Group E": [
+        "Japan",
+        "Spain",
+        "Germany",
+        "Costa Rica"
+      ],
+      "Group F": [
+        "Morocco",
+        "Croatia",
+        "Belgium",
+        "Canada"
+      ],
+      "Group G": [
+        "Brazil",
+        "Switzerland",
+        "Cameroon",
+        "Serbia"
+      ],
+      "Group H": [
+        "Portugal",
+        "South Korea",
+        "Uruguay",
+        "Ghana"
+      ]
+    }
+  },
+  "elos": {
+    "2014": {
+      "Brazil": 2238,
+      "Croatia": 1818,
+      "Mexico": 1814,
+      "Cameroon": 1605,
+      "Spain": 2107,
+      "Netherlands": 1985,
+      "Chile": 1920,
+      "Australia": 1708,
+      "Colombia": 1922,
+      "Greece": 1823,
+      "Ivory Coast": 1772,
+      "Japan": 1785,
+      "Uruguay": 1918,
+      "Costa Rica": 1711,
+      "England": 1931,
+      "Italy": 1887,
+      "Switzerland": 1854,
+      "Ecuador": 1836,
+      "France": 1897,
+      "Honduras": 1668,
+      "Argentina": 2018,
+      "Bosnia and Herzegovina": 1785,
+      "Iran": 1715,
+      "Nigeria": 1727,
+      "Germany": 2073,
+      "Portugal": 1942,
+      "Ghana": 1704,
+      "United States": 1857,
+      "Belgium": 1852,
+      "Algeria": 1625,
+      "Russia": 1848,
+      "South Korea": 1667
+    },
+    "2018": {
+      "Russia": 1778,
+      "Saudi Arabia": 1591,
+      "Egypt": 1646,
+      "Uruguay": 1894,
+      "Portugal": 1970,
+      "Spain": 2044,
+      "Morocco": 1733,
+      "Iran": 1789,
+      "France": 1987,
+      "Australia": 1742,
+      "Peru": 1915,
+      "Denmark": 1856,
+      "Argentina": 1986,
+      "Iceland": 1764,
+      "Croatia": 1853,
+      "Nigeria": 1681,
+      "Brazil": 2142,
+      "Switzerland": 1890,
+      "Costa Rica": 1744,
+      "Serbia": 1777,
+      "Germany": 2077,
+      "Mexico": 1850,
+      "Sweden": 1795,
+      "South Korea": 1714,
+      "Belgium": 1939,
+      "Panama": 1659,
+      "Tunisia": 1657,
+      "England": 1948,
+      "Poland": 1831,
+      "Senegal": 1750,
+      "Colombia": 1928,
+      "Japan": 1684
+    },
+    "2022": {
+      "Qatar": 1780,
+      "Ecuador": 1833,
+      "Senegal": 1687,
+      "Netherlands": 2040,
+      "England": 1920,
+      "Iran": 1797,
+      "United States": 1798,
+      "Wales": 1790,
+      "Argentina": 2143,
+      "Saudi Arabia": 1635,
+      "Mexico": 1809,
+      "Poland": 1814,
+      "France": 2005,
+      "Australia": 1719,
+      "Denmark": 1971,
+      "Tunisia": 1707,
+      "Spain": 2048,
+      "Costa Rica": 1743,
+      "Germany": 1963,
+      "Japan": 1787,
+      "Belgium": 2007,
+      "Canada": 1776,
+      "Morocco": 1766,
+      "Croatia": 1927,
+      "Brazil": 2169,
+      "Serbia": 1898,
+      "Switzerland": 1902,
+      "Cameroon": 1610,
+      "Portugal": 2006,
+      "Ghana": 1567,
+      "Uruguay": 1936,
+      "South Korea": 1786
+    }
+  }
+}
